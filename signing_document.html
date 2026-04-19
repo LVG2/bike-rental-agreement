@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Signing</title>
+    <script src="https://www.paypal.com/sdk/js?client-id=AaAJv2C4Kofz0YqJdI9-rD6ERTtMpZYSStJEeqHCzC8TPbLVu3335Pzzeu4Bskrboct75EknAs_OidyV&components=buttons&currency=USD&intent=authorize"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .language-selector select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .document {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .signature-pad {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        .buttons {
+            text-align: center;
+        }
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1 data-translate="pageTitle">🚲💟🚲💟🚲💟🚲💟🚲💟🚲</h1>
+    
+    <div class="language-selector">
+        <label for="languageSelect" data-translate="languageLabel">Language:</label>
+        <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="bg">Български</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+        </select>
+    </div>
+    
+    <div class="document">
+        <h2 data-translate="agreementTitle">BIKE RENTAL & LIABILITY RELEASE AGREEMENT</h2>
+        <p data-translate="agreementIntro">This Bike Rental and Liability Release Agreement ("Agreement") is entered into between the Company and the undersigned renter ("Renter").</p>
+        
+        <h3 data-translate="rentalTermsTitle">RENTAL TERMS:</h3>
+        <div style="margin: 15px 0;">
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="rentalTerm1Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="rentalTerm1Check" style="cursor: pointer;">
+                    <strong data-translate="rentalPeriodLabel">Rental Period:</strong> <span data-translate="rentalPeriodText">Bikes are rented for a minimum of 24 hours. Additional days may be charged at the daily rate.</span>
+                </label>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="rentalTerm2Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="rentalTerm2Check" style="cursor: pointer;">
+                    <strong data-translate="securityDepositLabel">Security Deposit:</strong> <span data-translate="securityDepositText">A $300 security deposit is required and will be held by PayPal. Deposit will be refunded within 7-10 business days after bike return, subject to inspection.</span>
+                </label>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="rentalTerm3Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="rentalTerm3Check" style="cursor: pointer;">
+                    <strong data-translate="lateReturnsLabel">Late Returns:</strong> <span data-translate="lateReturnsText">Late returns will incur additional charges of $50 USD per hour after the agreed return time.</span>
+                </label>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="rentalTerm4Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="rentalTerm4Check" style="cursor: pointer;">
+                    <strong data-translate="maintenanceLabel">Maintenance:</strong> <span data-translate="maintenanceText">Renter is responsible for basic maintenance. Any damage beyond normal wear will be charged to the security deposit.</span>
+                </label>
+            </div>
+        </div>
+        
+        <h3 data-translate="renterResponsibilitiesTitle">RENTER RESPONSIBILITIES:</h3>
+        <div style="margin: 15px 0;">
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="resp1Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="resp1Check" style="cursor: pointer;" data-translate="responsibility1">Return bike in the same condition as received, normal wear excepted.</label>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="resp2Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="resp2Check" style="cursor: pointer;" data-translate="responsibility2">Report any mechanical issues immediately to avoid additional charges.</label>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="resp3Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="resp3Check" style="cursor: pointer;" data-translate="responsibility3">Use bike only for intended purposes on paved roads and bike paths.</label>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="resp4Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="resp4Check" style="cursor: pointer;" data-translate="responsibility4">Comply with all local traffic laws and regulations.</label>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="resp5Check" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="resp5Check" style="cursor: pointer;" data-translate="responsibility5">Wear approved helmet at all times while riding.</label>
+            </div>
+        </div>
+        
+        <h3 data-translate="liabilityReleaseTitle">LIABILITY RELEASE:</h3>
+        <div style="margin: 15px 0; padding: 15px; background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 5px;">
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="liabilityCheck" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="liabilityCheck" style="cursor: pointer;" data-translate="liabilityReleaseText">In consideration of being permitted to use the bicycle, I hereby release, waive, discharge, and covenant not to sue the Company, its owners, agents, or employees from any and all liability, claims, demands, actions, or causes of action arising out of or related to any loss, damage, or injury, including death, that may be sustained while using the bicycle, whether caused by negligence or otherwise.</label>
+            </div>
+            
+            <p style="margin: 12px 0; font-weight: bold;" data-translate="risksText">I understand and acknowledge that bicycle riding involves inherent risks, including but not limited to:</p>
+            <div style="margin-left: 20px; margin-bottom: 12px;">
+                <div style="margin-bottom: 8px;" data-translate="risk1">• Traffic accidents and collisions</div>
+                <div style="margin-bottom: 8px;" data-translate="risk2">• Falls and injuries from uneven surfaces</div>
+                <div style="margin-bottom: 8px;" data-translate="risk3">• Weather-related incidents</div>
+                <div style="margin-bottom: 8px;" data-translate="risk4">• Theft or vandalism</div>
+                <div style="margin-bottom: 8px;" data-translate="risk5">• Mechanical failures</div>
+            </div>
+            
+            <div style="margin-bottom: 12px; margin-top: 15px;">
+                <input type="checkbox" id="riskAssumptionCheck" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="riskAssumptionCheck" style="cursor: pointer;">
+                    <strong data-translate="assumptionOfRiskLabel">ASSUMPTION OF RISK:</strong> <span data-translate="assumptionOfRiskText">I voluntarily assume all risks associated with bicycle use, including injury or death.</span>
+                </label>
+            </div>
+            
+            <div style="margin-bottom: 12px;">
+                <input type="checkbox" id="indemnificationCheck" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="indemnificationCheck" style="cursor: pointer;">
+                    <strong data-translate="indemnificationLabel">INDEMNIFICATION:</strong> <span data-translate="indemnificationText">I agree to indemnify and hold harmless the Company from any claims arising from my use of the bicycle.</span>
+                </label>
+            </div>
+        </div>
+        
+        <p data-translate="agreementAcknowledgment">By signing below, I acknowledge that I have read, understood, and agree to all terms and conditions of this agreement.</p>
+    </div>
+    
+    <div class="personal-info-section" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; background-color: #fff;">
+        <h3 data-translate="personalInfoTitle">Personal Information</h3>
+        <p data-translate="personalInfoDesc">Please provide your personal information for this agreement:</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+            <div>
+                <label for="fullName" data-translate="fullNameLabel">Full Name:</label><br>
+                <input type="text" id="fullName" placeholder="John Doe" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+            </div>
+            <div>
+                <label for="dateOfBirth" data-translate="dateOfBirthLabel">Date of Birth:</label><br>
+                <input type="date" id="dateOfBirth" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+            </div>
+            <div>
+                <label for="phone" data-translate="phoneLabel">Phone Number:</label><br>
+                <input type="tel" id="phone" placeholder="(555) 123-4567" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+            </div>
+            <div>
+                <label for="address" data-translate="addressLabel">Address:</label><br>
+                <input type="text" id="address" placeholder="123 Main St, City, State, ZIP" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+            </div>
+            <div>
+                <label for="emergencyContact" data-translate="emergencyContactLabel">Emergency Contact:</label><br>
+                <input type="text" id="emergencyContact" placeholder="Emergency Contact Name" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+            </div>
+            <div>
+                <label for="emergencyPhone" data-translate="emergencyPhoneLabel">Emergency Phone:</label><br>
+                <input type="tel" id="emergencyPhone" placeholder="(555) 987-6543" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+            <h4 data-translate="dataPrivacyTitle">Data Privacy Authorization</h4>
+            <p style="margin-bottom: 10px; font-size: 14px;" data-translate="dataPrivacyDesc">
+                I hereby authorize the collection, use, and storage of my personal information provided above for the purposes of this bike rental agreement, including but not limited to:
+            </p>
+            <ul style="font-size: 14px; margin-bottom: 15px;">
+                <li data-translate="dataPurpose1">Processing rental transactions and payments</li>
+                <li data-translate="dataPurpose2">Emergency contact purposes</li>
+                <li data-translate="dataPurpose3">Legal compliance and liability protection</li>
+                <li data-translate="dataPurpose4">Communication regarding the rental agreement</li>
+            </ul>
+            <div>
+                <input type="checkbox" id="dataAuthorization" style="margin-right: 10px; transform: scale(1.2);" required>
+                <label for="dataAuthorization" data-translate="dataAuthorizationLabel" style="font-weight: bold;">
+                    I authorize the use of my personal data as described above and agree to the terms of this agreement.
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <h3 data-translate="signatureTitle">Please sign below:</h3>
+    <div class="signature-pad">
+        <canvas id="signatureCanvas" width="600" height="200"></canvas>
+    </div>
+    
+    <div class="email-section" style="margin-bottom: 20px;">
+        <label for="emailInput" data-translate="emailLabel">Your email address (you will receive a copy):</label><br>
+        <input type="email" id="emailInput" placeholder="your.email@example.com" style="width: 300px; padding: 8px; margin-top: 5px;">
+        <br><small data-translate="emailNote">A copy will also be automatically sent to the administrator.</small>
+    </div>
+    
+    <div class="credit-card-section" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; background-color: #fff;">
+        <h3 data-translate="paymentTitle">Security Deposit Payment</h3>
+        <p data-translate="paymentAmount"><strong>Amount: $200 USD</strong></p>
+        <p data-translate="paymentDesc">This security deposit will be held by PayPal and refunded upon completion of the agreement terms.</p>
+        
+        <div id="paypal-button-container" style="margin-top: 15px;"></div>
+        
+        <div id="payment-status" style="margin-top: 15px; padding: 10px; display: none;"></div>
+        
+        <div style="margin-top: 10px; font-size: 12px; color: #666;">
+            <strong data-translate="securePaymentLabel">🔒 Secure Payment:</strong> <span data-translate="securePaymentText">Your payment information is processed securely by PayPal. Funds are held in escrow until the agreement is completed.</span>
+        </div>
+    </div>
+    
+    <div class="buttons">
+        <button id="clearBtn" data-translate="clearSignatureBtn">Clear Signature</button>
+        <button id="saveBtn" data-translate="saveDocumentBtn">Sign and Save Document</button>
+        <button id="emailBtn" data-translate="sendEmailBtn">Send Copy via Email</button>
+    </div>
+
+    <script>
+        // Translation system
+        const translations = {
+            en: {
+                pageTitle: "Airbnb Bike Rental Liability Waiver & Security Agreement",
+                languageLabel: "Language:",
+                agreementTitle: "BIKE RENTAL & LIABILITY RELEASE AGREEMENT",
+                agreementIntro: "This Bike Rental and Liability Release Agreement (\"Agreement\") is entered into between the Company and the undersigned renter (\"Renter\").",
+                rentalTermsTitle: "RENTAL TERMS:",
+                rentalTerm1: "Rental Period: Bikes are rented for a minimum of 24 hours. Additional days may be charged at the daily rate.",
+                rentalPeriodLabel: "Rental Period:",
+                rentalPeriodText: "Bikes are rented for a minimum of 24 hours. Additional days may be charged at the daily rate.",
+                rentalTerm2: "Security Deposit: A $200 USD security deposit is required and will be held by PayPal. Deposit will be refunded within 7-10 business days after bike return, subject to inspection.",
+                securityDepositLabel: "Security Deposit:",
+                securityDepositText: "A $200 USD security deposit is required and will be held by PayPal. Deposit will be refunded within 7-10 business days after bike return, subject to inspection.",
+                rentalTerm3: "Late Returns: Late returns will incur additional charges of $50 USD per hour after the agreed return time.",
+                lateReturnsLabel: "Late Returns:",
+                lateReturnsText: "Late returns will incur additional charges of $50 USD per hour after the agreed return time.",
+                rentalTerm4: "Maintenance: Renter is responsible for basic maintenance. Any damage beyond normal wear will be charged to the security deposit.",
+                maintenanceLabel: "Maintenance:",
+                maintenanceText: "Renter is responsible for basic maintenance. Any damage beyond normal wear will be charged to the security deposit.",
+                renterResponsibilitiesTitle: "RENTER RESPONSIBILITIES:",
+                responsibility1: "Return bike in the same condition as received, normal wear excepted.",
+                responsibility2: "Report any mechanical issues immediately to avoid additional charges.",
+                responsibility3: "Use bike only for intended purposes on paved roads and bike paths.",
+                responsibility4: "Comply with all local traffic laws and regulations.",
+                responsibility5: "Wear approved helmet at all times while riding.",
+                liabilityReleaseTitle: "LIABILITY RELEASE:",
+                liabilityReleaseText: "In consideration of being permitted to use the bicycle, I hereby release, waive, discharge, and covenant not to sue the Company, its owners, agents, or employees from any and all liability, claims, demands, actions, or causes of action arising out of or related to any loss, damage, or injury, including death, that may be sustained while using the bicycle, whether caused by negligence or otherwise.",
+                risksText: "I understand and acknowledge that bicycle riding involves inherent risks, including but not limited to:",
+                risk1: "Traffic accidents and collisions",
+                risk2: "Falls and injuries from uneven surfaces",
+                risk3: "Weather-related incidents",
+                risk4: "Theft or vandalism",
+                risk5: "Mechanical failures",
+                assumptionOfRiskLabel: "ASSUMPTION OF RISK:",
+                assumptionOfRiskText: "I voluntarily assume all risks associated with bicycle use, including injury or death.",
+                indemnificationLabel: "INDEMNIFICATION:",
+                indemnificationText: "I agree to indemnify and hold harmless the Company from any claims arising from my use of the bicycle.",
+                agreementAcknowledgment: "By signing below, I acknowledge that I have read, understood, and agree to all terms and conditions of this agreement.",
+                personalInfoTitle: "Personal Information",
+                personalInfoDesc: "Please provide your personal information for this agreement:",
+                fullNameLabel: "Full Name:",
+                dateOfBirthLabel: "Date of Birth:",
+                phoneLabel: "Phone Number:",
+                addressLabel: "Address:",
+                emergencyContactLabel: "Emergency Contact:",
+                emergencyPhoneLabel: "Emergency Phone:",
+                dataPrivacyTitle: "Data Privacy Authorization",
+                dataPrivacyDesc: "I hereby authorize the collection, use, and storage of my personal information provided above for the purposes of this bike rental agreement, including but not limited to:",
+                dataPurpose1: "Processing rental transactions and payments",
+                dataPurpose2: "Emergency contact purposes",
+                dataPurpose3: "Legal compliance and liability protection",
+                dataPurpose4: "Communication regarding the rental agreement",
+                dataAuthorizationLabel: "I authorize the use of my personal data as described above and agree to the terms of this agreement.",
+                signatureTitle: "Please sign below:",
+                emailLabel: "Your email address (you will receive a copy):",
+                emailNote: "A copy will also be automatically sent to the administrator.",
+                paymentTitle: "Security Deposit Payment",
+                paymentAmount: "Amount: $200 USD",
+                paymentDesc: "This security deposit will be held by PayPal and refunded upon completion of the agreement terms.",
+                securePaymentLabel: "🔒 Secure Payment:",
+                securePaymentText: "Your payment information is processed securely by PayPal. Funds are held in escrow until the agreement is completed.",
+                bankInfoTitle: "Bank Information (Alternative Payment Method)",
+                bankInfoDesc: "You can also provide your bank information for direct deposit or wire transfer:",
+                accountHolderNameLabel: "Account Holder Name:",
+                bankNameLabel: "Bank Name:",
+                accountNumberLabel: "Account Number:",
+                routingNumberLabel: "Routing Number:",
+                creditCardTitle: "Credit Card Information",
+                creditCardDesc: "Enter your credit card details for the security deposit:",
+                cardholderNameLabel: "Cardholder Name:",
+                cardNumberLabel: "Card Number:",
+                expirationDateLabel: "Expiration Date:",
+                cvvLabel: "CVV:",
+                secureCardLabel: "🔒 Secure Card Processing:",
+                secureCardText: "Your credit card information is encrypted and processed securely. We do not store your card details.",
+                clearSignatureBtn: "Clear Signature",
+                saveDocumentBtn: "Sign and Save Document",
+                sendEmailBtn: "Send Copy via Email"
+            },
+            bg: {
+                pageTitle: "Споразумение за Наемане на Велосипеди и Освобождаване от Отговорност Airbnb",
+                languageLabel: "Език:",
+                agreementTitle: "ДОГОВОР ЗА НАЕМАНЕ НА ВЕЛОСИПЕДИ И ОСВОБОЖДАВАНЕ ОТ ОТГОВОРНОСТ",
+                agreementIntro: "Този Договор за Наемане на Велосипеди и Освобождаване от Отговорност (\"Договор\") се сключва между Компанията и наемателя подписал (\"Наемател\").",
+                rentalTermsTitle: "УСЛОВИЯ ЗА НАЕМАНЕ:",
+                rentalTerm1: "Период на Наемане: Велосипедите се наемат за минимум 24 часа. Допълнителните дни могат да бъдат таксувани по дневната тарифа.",
+                rentalPeriodLabel: "Период на Наемане:",
+                rentalPeriodText: "Велосипедите се наемат за минимум 24 часа. Допълнителните дни могат да бъдат таксувани по дневната тарифа.",
+                rentalTerm2: "Гаранционен Депозит: Изисква се гаранционен депозит от $200 USD, който ще бъде задържан от PayPal. Депозитът ще бъде възстановен в рамките на 7-10 работни дни след връщане на велосипеда, при условие на инспекция.",
+                securityDepositLabel: "Гаранционен Депозит:",
+                securityDepositText: "Изисква се гаранционен депозит от $200 USD, който ще бъде задържан от PayPal. Депозитът ще бъде възстановен в рамките на 7-10 работни дни след връщане на велосипеда, при условие на инспекция.",
+                rentalTerm3: "Закъснели Връщания: Закъснелите връщания ще доведат до допълнителни такси от $50 USD на час след уговореното време за връщане.",
+                lateReturnsLabel: "Закъснели Връщания:",
+                lateReturnsText: "Закъснелите връщания ще доведат до допълнителни такси от $50 USD на час след уговореното време за връщане.",
+                rentalTerm4: "Поддръжка: Наемателят е отговорен за основната поддръжка. Всяко повреждане извън нормалното износване ще бъде таксувано от гаранционния депозит.",
+                maintenanceLabel: "Поддръжка:",
+                maintenanceText: "Наемателят е отговорен за основната поддръжка. Всяко повреждане извън нормалното износване ще бъде таксувано от гаранционния депозит.",
+                renterResponsibilitiesTitle: "ОТГОВОРНОСТИ НА НАЕМАТЕЛЯ:",
+                responsibility1: "Върнете велосипеда в същото състояние, в което е получен, нормалното износване изключено.",
+                responsibility2: "Докладвайте за механични проблеми незабавно, за да избегнете допълнителни такси.",
+                responsibility3: "Използвайте велосипеда само за предвидените цели по павирани пътища и велосипедни алеи.",
+                responsibility4: "Спазвайте всички местни правила и разпоредби за движение.",
+                responsibility5: "Носете одобрен шлем по всяко време по време на каране.",
+                liabilityReleaseTitle: "ОСВОБОЖДАВАНЕ ОТ ОТГОВОРНОСТ:",
+                liabilityReleaseText: "Като компенсация за разрешението да използвам велосипеда, с настоящото освобождавам Компанията, техните собственици, агенти или служители от всякаква отговорност, искове, искания, действия или причини за действия, произтичащи от или свързани с всяка загуба, щета или нараняване, включително смърт, които могат да бъдат претърпени при използване на велосипеда, независимо дали причинени от небрежност или по друг начин.",
+                risksText: "Разбирам и признавам, че карането на велосипед включва присъщи рискове, включително но не само:",
+                risk1: "Пътнотранспортни произшествия и сблъсъци",
+                risk2: "Падания и наранявания по неравни повърхности",
+                risk3: "Инциденти, свързани с времето",
+                risk4: "Кражба или вандализъм",
+                risk5: "Механични повреди",
+                assumptionOfRiskLabel: "ПРЕДПОЛАГАНЕ НА РИСКА:",
+                assumptionOfRiskText: "Доброволно приемам всички рискове, свързани с използването на велосипеда, включително нараняване или смърт.",
+                indemnificationLabel: "ОБЕЗЩЕТЕНИЕ:",
+                indemnificationText: "Съгласявам се да обезщетя и да освободя Компанията от всякакви искове, произтичащи от моето използване на велосипеда.",
+                agreementAcknowledgment: "С подписването по-долу признавам, че съм прочел, разбрал и се съгласявам с всички условия и разпоредби на настоящия договор.",
+                personalInfoTitle: "Лична Информация",
+                personalInfoDesc: "Моля, предоставете личната си информация за настоящия договор:",
+                fullNameLabel: "Пълно Име:",
+                dateOfBirthLabel: "Дата на Раждане:",
+                phoneLabel: "Телефонен Номер:",
+                addressLabel: "Адрес:",
+                emergencyContactLabel: "Контакт при Спешни Случаи:",
+                emergencyPhoneLabel: "Телефон при Спешни Случаи:",
+                dataPrivacyTitle: "Одобрение за Поверителност на Данните",
+                dataPrivacyDesc: "С настоящото разрешавам събирането, използването и съхранението на личната ми информация, предоставена по-горе, за целите на настоящия договор за наемане на велосипеди, включително но не само:",
+                dataPurpose1: "Обработка на транзакции за наемане и плащания",
+                dataPurpose2: "Цели за контакт при спешни случаи",
+                dataPurpose3: "Съответствие с правните норми и защита на отговорността",
+                dataPurpose4: "Комуникация относно договора за наемане",
+                dataAuthorizationLabel: "Разрешавам използването на личните ми данни, както е описано по-горе, и се съгласявам с условията на настоящия договор.",
+                signatureTitle: "Моля, подпишете по-долу:",
+                emailLabel: "Вашият имейл адрес (ще получите копие):",
+                emailNote: "Копие също ще бъде изпратено автоматично до администратора.",
+                paymentTitle: "Плащане на Гаранционен Депозит",
+                paymentAmount: "Сума: $200 USD",
+                paymentDesc: "Този гаранционен депозит ще бъде задържан от PayPal и възстановен при завършване на условията на договора.",
+                securePaymentLabel: "🔒 Сигурно Плащане:",
+                securePaymentText: "Информацията ви за плащане се обработва сигурно от PayPal. Средствата се задържат в депозит до завършване на договора.",
+                bankInfoTitle: "Банкова Информация (Алтернативен Метод на Плащане)",
+                bankInfoDesc: "Можете също да предоставите банковата си информация за директен депозит или банков превод:",
+                accountHolderNameLabel: "Име на Титуляра на Сметката:",
+                bankNameLabel: "Име на Банката:",
+                accountNumberLabel: "Номер на Сметката:",
+                routingNumberLabel: "Код за Маршрутизиране:",
+                creditCardTitle: "Информация за Кредитна Карта",
+                creditCardDesc: "Въведете данните на кредитната си карта за гаранционния депозит:",
+                cardholderNameLabel: "Име на Титуляра на Картата:",
+                cardNumberLabel: "Номер на Картата:",
+                expirationDateLabel: "Дата на Изтичане:",
+                cvvLabel: "CVV:",
+                secureCardLabel: "🔒 Сигурна Обработка на Карта:",
+                secureCardText: "Информацията за кредитната ви карта е криптирана и обработена сигурно. Ние не съхраняваме данните на картата ви.",
+                clearSignatureBtn: "Изчисти Подписа",
+                saveDocumentBtn: "Подпиши и Запази Документа",
+                sendEmailBtn: "Изпрати Копие по Имейл"
+            },
+            zh: {
+                pageTitle: "Airbnb 自行车租赁责任免除和安全押金协议",
+                languageLabel: "语言:",
+                agreementTitle: "自行车租赁和责任免除协议",
+                agreementIntro: "本自行车租赁和责任免除协议（\"协议\"）由公司与签署承租人（\"承租人\"）之间签订。",
+                rentalTermsTitle: "租赁条款:",
+                rentalTerm1: "租赁期限：自行车租赁至少24小时。额外天数可能按每日费率收费。",
+                rentalPeriodLabel: "租赁期限:",
+                rentalPeriodText: "自行车租赁至少24小时。额外天数可能按每日费率收费。",
+                rentalTerm2: "安全押金：需要$200 USD安全押金，由PayPal持有。押金将在退还自行车后7-10个工作日内退还，视检查情况而定。",
+                securityDepositLabel: "安全押金:",
+                securityDepositText: "需要$200 USD安全押金，由PayPal持有。押金将在退还自行车后7-10个工作日内退还，视检查情况而定。",
+                rentalTerm3: "逾期归还：逾期归还将产生额外费用，每超过约定归还时间后每小时$50 USD。",
+                lateReturnsLabel: "逾期归还:",
+                lateReturnsText: "逾期归还将产生额外费用，每超过约定归还时间后每小时$50 USD。",
+                rentalTerm4: "维护：承租人负责基本维护。超出正常磨损的任何损坏将从安全押金中扣除。",
+                maintenanceLabel: "维护:",
+                maintenanceText: "承租人负责基本维护。超出正常磨损的任何损坏将从安全押金中扣除。",
+                renterResponsibilitiesTitle: "承租人责任:",
+                responsibility1: "将自行车退还至接收时的相同状态，正常磨损除外。",
+                responsibility2: "立即报告任何机械问题，以避免额外费用。",
+                responsibility3: "仅在铺设道路和自行车道上用于预期目的。",
+                responsibility4: "遵守所有当地交通法规和条例。",
+                responsibility5: "骑行时始终佩戴批准的头盔。",
+                liabilityReleaseTitle: "责任免除:",
+                liabilityReleaseText: "作为获得使用自行车的许可的补偿，我特此免除公司、其所有者、代理或员工对因使用自行车而遭受的任何损失、损害或伤害（包括死亡）承担的任何责任、索赔、要求、诉讼或诉讼原因，无论是由疏忽还是其他原因引起的。",
+                risksText: "我理解并承认骑自行车涉及固有风险，包括但不限于:",
+                risk1: "交通事故和碰撞",
+                risk2: "在不平整表面上的跌倒和伤害",
+                risk3: "与天气相关的意外",
+                risk4: "盗窃或破坏",
+                risk5: "机械故障",
+                assumptionOfRiskLabel: "风险承担:",
+                assumptionOfRiskText: "我自愿承担与自行车使用相关的所有风险，包括伤害或死亡。",
+                indemnificationLabel: "赔偿:",
+                indemnificationText: "我同意赔偿并使公司免于因我使用自行车而产生的任何索赔。",
+                agreementAcknowledgment: "在下方签名，我承认我已阅读、理解并同意本协议的所有条款和条件。",
+                personalInfoTitle: "个人信息",
+                personalInfoDesc: "请为此协议提供您的个人信息:",
+                fullNameLabel: "全名:",
+                dateOfBirthLabel: "出生日期:",
+                phoneLabel: "电话号码:",
+                addressLabel: "地址:",
+                emergencyContactLabel: "紧急联系人:",
+                emergencyPhoneLabel: "紧急电话:",
+                dataPrivacyTitle: "数据隐私授权",
+                dataPrivacyDesc: "我特此授权收集、使用和存储上述提供的个人信息，用于本自行车租赁协议的目的，包括但不限于:",
+                dataPurpose1: "处理租赁交易和付款",
+                dataPurpose2: "紧急联系目的",
+                dataPurpose3: "法律合规和责任保护",
+                dataPurpose4: "关于租赁协议的沟通",
+                dataAuthorizationLabel: "我授权按照上述描述使用我的个人数据，并同意本协议的条款。",
+                signatureTitle: "请在下方签名:",
+                emailLabel: "您的电子邮件地址（您将收到副本）:",
+                emailNote: "副本也将自动发送给管理员。",
+                paymentTitle: "安全押金付款",
+                paymentAmount: "金额: $200 USD",
+                paymentDesc: "此安全押金将由PayPal持有，并在完成协议条款后退还。",
+                securePaymentLabel: "🔒 安全付款:",
+                securePaymentText: "您的付款信息由PayPal安全处理。资金在完成协议前存放在托管账户中。",
+                bankInfoTitle: "银行信息（替代付款方式）",
+                bankInfoDesc: "您也可以提供您的银行信息用于直接存款或电汇：",
+                accountHolderNameLabel: "账户持有人姓名：",
+                bankNameLabel: "银行名称：",
+                accountNumberLabel: "账户号码：",
+                routingNumberLabel: "路由号码：",
+                creditCardTitle: "信用卡信息",
+                creditCardDesc: "输入您的信用卡详细信息以支付安全押金：",
+                cardholderNameLabel: "持卡人姓名：",
+                cardNumberLabel: "卡号：",
+                expirationDateLabel: "到期日期：",
+                cvvLabel: "CVV：",
+                secureCardLabel: "🔒 安全卡处理：",
+                secureCardText: "您的信用卡信息经过加密并安全处理。我们不存储您的卡详细信息。",
+                clearSignatureBtn: "清除签名",
+                saveDocumentBtn: "签署并保存文档",
+                sendEmailBtn: "通过电子邮件发送副本"
+            },
+            ja: {
+                pageTitle: "Airbnb 自転車レンタル免責およびセキュリティデポジット契約",
+                languageLabel: "言語:",
+                agreementTitle: "自転車レンタルおよび免責契約",
+                agreementIntro: "この自転車レンタルおよび免責契約（\"契約\"）は会社と署名した借受人（\"借受人\"）との間で締結されます。",
+                rentalTermsTitle: "レンタル条件:",
+                rentalTerm1: "レンタル期間：自転車は最低24時間レンタルされます。追加日数は日額料金で請求される可能性があります。",
+                rentalPeriodLabel: "レンタル期間:",
+                rentalPeriodText: "自転車は最低24時間レンタルされます。追加日数は日額料金で請求される可能性があります。",
+                rentalTerm2: "セキュリティデポジット：$200 USDのセキュリティデポジットが必要です。これはPayPalによって保留されます。デポジットは自転車の返却後7-10営業日以内に返金されます（検査条件付き）。",
+                securityDepositLabel: "セキュリティデポジット:",
+                securityDepositText: "$200 USDのセキュリティデポジットが必要です。これはPayPalによって保留されます。デポジットは自転車の返却後7-10営業日以内に返金されます（検査条件付き）。",
+                rentalTerm3: "遅延返却：遅延返却は、合意された返却時間後1時間ごとに$50 USDの追加料金が発生します。",
+                lateReturnsLabel: "遅延返却:",
+                lateReturnsText: "遅延返却は、合意された返却時間後1時間ごとに$50 USDの追加料金が発生します。",
+                rentalTerm4: "メンテナンス：借受人は基本的なメンテナンスを担当します。通常の摩耗を超える損傷はセキュリティデポジットから請求されます。",
+                maintenanceLabel: "メンテナンス:",
+                maintenanceText: "借受人は基本的なメンテナンスを担当します。通常の摩耗を超える損傷はセキュリティデポジットから請求されます。",
+                renterResponsibilitiesTitle: "借受人の責任:",
+                responsibility1: "自転車を受領したときと同じ状態で返却してください。通常の摩耗は除きます。",
+                responsibility2: "追加料金を避けるため、機械的な問題をすぐに報告してください。",
+                responsibility3: "舗装道路と自転車道でのみ想定された目的で使用してください。",
+                responsibility4: "すべての現地交通規則と規制を遵守してください。",
+                responsibility5: "ライド中は常に承認されたヘルメットを着用してください。",
+                liabilityReleaseTitle: "免責:",
+                liabilityReleaseText: "自転車を使用する許可を得る対価として、私は会社、その所有者、代理人または従業員に対し、自転車の使用から生じる可能性のあるあらゆる損失、損害または傷害（死亡を含む）に対するあらゆる責任、請求、要求、訴訟または訴訟原因から免除します。過失によるか否かを問わず。",
+                risksText: "私は自転車に乗ることに関連する固有のリスクを理解し、認識します。これには以下が含まれますが、これらに限定されません:",
+                risk1: "交通事故と衝突",
+                risk2: "不均一な表面での転倒と傷害",
+                risk3: "天候関連の事故",
+                risk4: "盗難または破壊行為",
+                risk5: "機械的故障",
+                assumptionOfRiskLabel: "リスクの引き受け:",
+                assumptionOfRiskText: "私は自転車の使用に関連するすべてのリスク、傷害または死亡を含むものを自発的に引き受けます。",
+                indemnificationLabel: "補償:",
+                indemnificationText: "私は自転車の使用から生じるあらゆる請求から会社を補償し、免除することに同意します。",
+                agreementAcknowledgment: "下記に署名することにより、私は本契約のすべての条件を読み、理解し、同意したことを認めます。",
+                personalInfoTitle: "個人情報",
+                personalInfoDesc: "この契約のために個人情報を提供してください:",
+                fullNameLabel: "フルネーム:",
+                dateOfBirthLabel: "生年月日:",
+                phoneLabel: "電話番号:",
+                addressLabel: "住所:",
+                emergencyContactLabel: "緊急連絡先:",
+                emergencyPhoneLabel: "緊急電話:",
+                dataPrivacyTitle: "データプライバシー承認",
+                dataPrivacyDesc: "私は、上記で提供された個人情報の収集、使用および保存を、本自転車レンタル契約の目的のために承認します。これには以下が含まれますが、これらに限定されません:",
+                dataPurpose1: "レンタル取引と支払いの処理",
+                dataPurpose2: "緊急連絡目的",
+                dataPurpose3: "法的コンプライアンスと責任保護",
+                dataPurpose4: "レンタル契約に関するコミュニケーション",
+                dataAuthorizationLabel: "私は上記の説明に従って私の個人データを使用することを承認し、本契約の条件に同意します。",
+                signatureTitle: "下記に署名してください:",
+                emailLabel: "あなたのメールアドレス（コピーを受け取ります）:",
+                emailNote: "コピーは管理者にも自動的に送信されます。",
+                paymentTitle: "セキュリティデポジット支払い",
+                paymentAmount: "金額: $200 USD",
+                paymentDesc: "このセキュリティデポジットはPayPalによって保留され、契約条件の完了後に返金されます。",
+                securePaymentLabel: "🔒 安全な支払い:",
+                securePaymentText: "あなたの支払い情報はPayPalによって安全に処理されます。資金は契約完了までエスクローアカウントに保持されます。",
+                bankInfoTitle: "銀行情報（代替支払い方法）",
+                bankInfoDesc: "直接入金または電信送金のために銀行情報を提供することもできます：",
+                accountHolderNameLabel: "口座名義人名：",
+                bankNameLabel: "銀行名：",
+                accountNumberLabel: "口座番号：",
+                routingNumberLabel: "ルーティング番号：",
+                creditCardTitle: "クレジットカード情報",
+                creditCardDesc: "セキュリティデポジットのクレジットカード詳細を入力してください：",
+                cardholderNameLabel: "カード名義人：",
+                cardNumberLabel: "カード番号：",
+                expirationDateLabel: "有効期限：",
+                cvvLabel: "CVV：",
+                secureCardLabel: "🔒 安全なカード処理：",
+                secureCardText: "あなたのクレジットカード情報は暗号化され、安全に処理されます。私たちはあなたのカード詳細を保存しません。",
+                clearSignatureBtn: "署名をクリア",
+                saveDocumentBtn: "署名してドキュメントを保存",
+                sendEmailBtn: "メールでコピーを送信"
+            },
+            es: {
+                pageTitle: "Acuerdo de Exención de Responsabilidad y Depósito de Seguridad para Alquiler de Bicicletas Airbnb",
+                languageLabel: "Idioma:",
+                agreementTitle: "ACUERDO DE ALQUILER DE BICICLETAS Y EXENCIÓN DE RESPONSABILIDAD",
+                agreementIntro: "Este Acuerdo de Alquiler de Bicicletas y Exención de Responsabilidad (\"Acuerdo\") se celebra entre la Compañía y el arrendatario firmante (\"Arrendatario\").",
+                rentalTermsTitle: "TÉRMINOS DE ALQUILER:",
+                rentalTerm1: "Período de Alquiler: Las bicicletas se alquilan por un mínimo de 24 horas. Los días adicionales pueden cobrarse a la tarifa diaria.",
+                rentalPeriodLabel: "Período de Alquiler:",
+                rentalPeriodText: "Las bicicletas se alquilan por un mínimo de 24 horas. Los días adicionales pueden cobrarse a la tarifa diaria.",
+                rentalTerm2: "Depósito de Seguridad: Se requiere un depósito de seguridad de $200 USD que será retenido por PayPal. El depósito será reembolsado dentro de 7-10 días hábiles después de la devolución de la bicicleta, sujeto a inspección.",
+                securityDepositLabel: "Depósito de Seguridad:",
+                securityDepositText: "Se requiere un depósito de seguridad de $200 USD que será retenido por PayPal. El depósito será reembolsado dentro de 7-10 días hábiles después de la devolución de la bicicleta, sujeto a inspección.",
+                rentalTerm3: "Devoluciones Tardías: Las devoluciones tardías incurrirán en cargos adicionales de $50 USD por hora después de la hora acordada.",
+                lateReturnsLabel: "Devoluciones Tardías:",
+                lateReturnsText: "Las devoluciones tardías incurrirán en cargos adicionales de $50 por hora después de la hora acordada.",
+                rentalTerm4: "Mantenimiento: El arrendatario es responsable del mantenimiento básico. Cualquier daño más allá del desgaste normal se cargará al depósito de seguridad.",
+                maintenanceLabel: "Mantenimiento:",
+                maintenanceText: "El arrendatario es responsable del mantenimiento básico. Cualquier daño más allá del desgaste normal se cargará al depósito de seguridad.",
+                renterResponsibilitiesTitle: "RESPONSABILIDADES DEL ARRENDATARIO:",
+                responsibility1: "Devolver la bicicleta en las mismas condiciones en que se recibió, salvo desgaste normal.",
+                responsibility2: "Reportar problemas mecánicos inmediatamente para evitar cargos adicionales.",
+                responsibility3: "Usar la bicicleta solo para fines previstos en carreteras pavimentadas y caminos para bicicletas.",
+                responsibility4: "Cumplir con todas las leyes y regulaciones de tráfico locales.",
+                responsibility5: "Usar casco aprobado en todo momento mientras se conduce.",
+                liabilityReleaseTitle: "EXENCIÓN DE RESPONSABILIDAD:",
+                liabilityReleaseText: "A cambio de permitirme usar la bicicleta, por la presente libero, renuncio, descargo y me comprometo a no demandar a la Compañía, sus propietarios, agentes o empleados de cualquier responsabilidad, reclamos, demandas, acciones o causas de acción que surjan de o estén relacionadas con cualquier pérdida, daño o lesión, incluyendo la muerte, que pueda sufrir mientras uso la bicicleta, ya sea por negligencia o de otro modo.",
+                risksText: "Entiendo y reconozco que andar en bicicleta implica riesgos inherentes, incluyendo pero no limitado a:",
+                risk1: "Accidentes de tráfico y colisiones",
+                risk2: "Caídas y lesiones en superficies irregulares",
+                risk3: "Incidentes relacionados con el clima",
+                risk4: "Robo o vandalismo",
+                risk5: "Fallos mecánicos",
+                assumptionOfRiskLabel: "ASUNCIÓN DE RIESGO:",
+                assumptionOfRiskText: "Asumo voluntariamente todos los riesgos asociados con el uso de la bicicleta, incluyendo lesiones o muerte.",
+                indemnificationLabel: "INDEMNIZACIÓN:",
+                indemnificationText: "Acepto indemnizar y mantener indemne a la Compañía de cualquier reclamo que surja del uso de la bicicleta.",
+                agreementAcknowledgment: "Al firmar a continuación, reconozco que he leído, entendido y acepto todos los términos y condiciones de este acuerdo.",
+                personalInfoTitle: "Información Personal",
+                personalInfoDesc: "Por favor proporcione su información personal para este acuerdo:",
+                fullNameLabel: "Nombre Completo:",
+                dateOfBirthLabel: "Fecha de Nacimiento:",
+                phoneLabel: "Número de Teléfono:",
+                addressLabel: "Dirección:",
+                emergencyContactLabel: "Contacto de Emergencia:",
+                emergencyPhoneLabel: "Teléfono de Emergencia:",
+                dataPrivacyTitle: "Autorización de Privacidad de Datos",
+                dataPrivacyDesc: "Por la presente autorizo la recopilación, uso y almacenamiento de mi información personal proporcionada anteriormente para los fines de este acuerdo de alquiler de bicicletas, incluyendo pero no limitado a:",
+                dataPurpose1: "Procesamiento de transacciones de alquiler y pagos",
+                dataPurpose2: "Propósitos de contacto de emergencia",
+                dataPurpose3: "Cumplimiento legal y protección de responsabilidad",
+                dataPurpose4: "Comunicación respecto al acuerdo de alquiler",
+                dataAuthorizationLabel: "Autorizo el uso de mis datos personales como se describe arriba y acepto los términos de este acuerdo.",
+                signatureTitle: "Por favor firme a continuación:",
+                emailLabel: "Su dirección de correo electrónico (recibirá una copia):",
+                emailNote: "Una copia también se enviará automáticamente al administrador.",
+                paymentTitle: "Pago del Depósito de Seguridad",
+                paymentAmount: "Monto: $200 USD",
+                paymentDesc: "Este depósito de seguridad será retenido por PayPal y reembolsado al completar los términos del acuerdo.",
+                securePaymentLabel: "🔒 Pago Seguro:",
+                securePaymentText: "Su información de pago es procesada de forma segura por PayPal. Los fondos se mantienen en depósito hasta completar el acuerdo.",
+                bankInfoTitle: "Información Bancaria (Método de Pago Alternativo)",
+                bankInfoDesc: "También puede proporcionar su información bancaria para depósito directo o transferencia bancaria:",
+                accountHolderNameLabel: "Nombre del Titular de la Cuenta:",
+                bankNameLabel: "Nombre del Banco:",
+                accountNumberLabel: "Número de Cuenta:",
+                routingNumberLabel: "Número de Ruta:",
+                creditCardTitle: "Información de Tarjeta de Crédito",
+                creditCardDesc: "Ingrese los detalles de su tarjeta de crédito para el depósito de seguridad:",
+                cardholderNameLabel: "Nombre del Titular de la Tarjeta:",
+                cardNumberLabel: "Número de Tarjeta:",
+                expirationDateLabel: "Fecha de Expiración:",
+                cvvLabel: "CVV:",
+                secureCardLabel: "🔒 Procesamiento Seguro de Tarjeta:",
+                secureCardText: "Su información de tarjeta de crédito está encriptada y procesada de forma segura. No almacenamos los detalles de su tarjeta.",
+                clearSignatureBtn: "Borrar Firma",
+                saveDocumentBtn: "Firmar y Guardar Documento",
+                sendEmailBtn: "Enviar Copia por Correo"
+            },
+            fr: {
+                pageTitle: "Accord d'Exonération de Responsabilité et Dépôt de Sécurité pour Location de Vélos Airbnb",
+                languageLabel: "Langue:",
+                agreementTitle: "ACCORD DE LOCATION DE VÉLOS ET EXONÉRATION DE RESPONSABILITÉ",
+                agreementIntro: "Cet Accord de Location de Vélos et Exonération de Responsabilité (\"Accord\") est conclu entre la Société et le locataire soussigné (\"Locataire\").",
+                rentalTermsTitle: "CONDITIONS DE LOCATION:",
+                rentalTerm1: "Période de Location: Les vélos sont loués pour un minimum de 24 heures. Des jours supplémentaires peuvent être facturés au tarif journalier.",
+                rentalPeriodLabel: "Période de Location:",
+                rentalPeriodText: "Les vélos sont loués pour un minimum de 24 heures. Des jours supplémentaires peuvent être facturés au tarif journalier.",
+                rentalTerm2: "Dépôt de Sécurité: Un dépôt de sécurité de 200 $ USD est requis et sera retenu par PayPal. Le dépôt sera remboursé dans les 7-10 jours ouvrables après le retour du vélo, sous réserve d'inspection.",
+                securityDepositLabel: "Dépôt de Sécurité:",
+                securityDepositText: "Un dépôt de sécurité de 200 $ USD est requis et sera retenu par PayPal. Le dépôt sera remboursé dans les 7-10 jours ouvrables après le retour du vélo, sous réserve d'inspection.",
+                rentalTerm3: "Retours Tardifs: Les retours tardifs entraîneront des frais supplémentaires de 50 $ USD par heure après l'heure convenue.",
+                lateReturnsLabel: "Retours Tardifs:",
+                lateReturnsText: "Les retours tardifs entraîneront des frais supplémentaires de 50 $ par heure après l'heure convenue.",
+                rentalTerm4: "Maintenance: Le locataire est responsable de l'entretien de base. Tout dommage au-delà de l'usure normale sera facturé sur le dépôt de sécurité.",
+                maintenanceLabel: "Maintenance:",
+                maintenanceText: "Le locataire est responsable de l'entretien de base. Tout dommage au-delà de l'usure normale sera facturé sur le dépôt de sécurité.",
+                renterResponsibilitiesTitle: "RESPONSABILITÉS DU LOCATAIRE:",
+                responsibility1: "Retourner le vélo dans le même état que reçu, usure normale exceptée.",
+                responsibility2: "Signaler immédiatement les problèmes mécaniques pour éviter des frais supplémentaires.",
+                responsibility3: "Utiliser le vélo uniquement pour les usages prévus sur les routes pavées et pistes cyclables.",
+                responsibility4: "Se conformer à toutes les lois et réglementations de circulation locales.",
+                responsibility5: "Porter un casque approuvé en tout temps pendant la conduite.",
+                liabilityReleaseTitle: "EXONÉRATION DE RESPONSABILITÉ:",
+                liabilityReleaseText: "En considération de la permission d'utiliser le vélo, je libère par la présente, renonce, décharge et m'engage à ne pas poursuivre la Société, ses propriétaires, agents ou employés de toute responsabilité, réclamation, demande, action ou cause d'action découlant de ou liée à toute perte, dommage ou blessure, y compris la mort, qui pourrait être subie en utilisant le vélo, que ce soit par négligence ou autrement.",
+                risksText: "Je comprends et reconnais que le vélo implique des risques inhérents, y compris mais sans s'y limiter:",
+                risk1: "Accidents de circulation et collisions",
+                risk2: "Chutes et blessures sur surfaces irrégulières",
+                risk3: "Incidents liés à la météo",
+                risk4: "Vol ou vandalisme",
+                risk5: "Pannes mécaniques",
+                assumptionOfRiskLabel: "ACCEPTATION DU RISQUE:",
+                assumptionOfRiskText: "J'accepte volontairement tous les risques associés à l'utilisation du vélo, y compris les blessures ou la mort.",
+                indemnificationLabel: "INDEMNISATION:",
+                indemnificationText: "J'accepte d'indemniser et de tenir indemne la Société de toute réclamation découlant de mon utilisation du vélo.",
+                agreementAcknowledgment: "En signant ci-dessous, je reconnais avoir lu, compris et accepté tous les termes et conditions de cet accord.",
+                personalInfoTitle: "Informations Personnelles",
+                personalInfoDesc: "Veuillez fournir vos informations personnelles pour cet accord:",
+                fullNameLabel: "Nom Complet:",
+                dateOfBirthLabel: "Date de Naissance:",
+                phoneLabel: "Numéro de Téléphone:",
+                addressLabel: "Adresse:",
+                emergencyContactLabel: "Contact d'Urgence:",
+                emergencyPhoneLabel: "Téléphone d'Urgence:",
+                dataPrivacyTitle: "Autorisation de Confidentialité des Données",
+                dataPrivacyDesc: "Par la présente, j'autorise la collecte, l'utilisation et le stockage de mes informations personnelles fournies ci-dessus aux fins de cet accord de location de vélos, y compris mais sans s'y limiter:",
+                dataPurpose1: "Traitement des transactions de location et paiements",
+                dataPurpose2: "Objectifs de contact d'urgence",
+                dataPurpose3: "Conformité juridique et protection de responsabilité",
+                dataPurpose4: "Communication concernant l'accord de location",
+                dataAuthorizationLabel: "J'autorise l'utilisation de mes données personnelles comme décrit ci-dessus et j'accepte les termes de cet accord.",
+                signatureTitle: "Veuillez signer ci-dessous:",
+                emailLabel: "Votre adresse e-mail (vous recevrez une copie):",
+                emailNote: "Une copie sera également automatiquement envoyée à l'administrateur.",
+                paymentTitle: "Paiement du Dépôt de Sécurité",
+                paymentAmount: "Montant: 200 $ USD",
+                paymentDesc: "Ce dépôt de sécurité sera retenu par PayPal et remboursé à la fin des termes de l'accord.",
+                securePaymentLabel: "🔒 Paiement Sécurisé:",
+                securePaymentText: "Vos informations de paiement sont traitées en toute sécurité par PayPal. Les fonds sont conservés en dépôt jusqu'à l'achèvement de l'accord.",
+                bankInfoTitle: "Informations Bancaires (Méthode de Paiement Alternative)",
+                bankInfoDesc: "Vous pouvez également fournir vos informations bancaires pour virement direct ou virement bancaire :",
+                accountHolderNameLabel: "Nom du Titulaire du Compte :",
+                bankNameLabel: "Nom de la Banque :",
+                accountNumberLabel: "Numéro de Compte :",
+                routingNumberLabel: "Numéro de Routage :",
+                creditCardTitle: "Informations de Carte de Crédit",
+                creditCardDesc: "Entrez les détails de votre carte de crédit pour le dépôt de sécurité :",
+                cardholderNameLabel: "Nom du Titulaire de la Carte :",
+                cardNumberLabel: "Numéro de Carte :",
+                expirationDateLabel: "Date d'Expiration :",
+                cvvLabel: "CVV :",
+                secureCardLabel: "🔒 Traitement Sécurisé de Carte :",
+                secureCardText: "Vos informations de carte de crédit sont cryptées et traitées en toute sécurité. Nous ne stockons pas les détails de votre carte.",
+                clearSignatureBtn: "Effacer la Signature",
+                saveDocumentBtn: "Signer et Sauvegarder le Document",
+                sendEmailBtn: "Envoyer une Copie par E-mail"
+            },
+            de: {
+                pageTitle: "Airbnb Fahrradvermietung Haftungsausschluss & Sicherheitskaution Vereinbarung",
+                languageLabel: "Sprache:",
+                agreementTitle: "FAHRRADVERMIETUNG & HAFTUNGSAUSSCHLUSS VEREINBARUNG",
+                agreementIntro: "Diese Fahrradvermietung und Haftungsausschluss Vereinbarung (\"Vereinbarung\") wird zwischen Cartagena Bike Rentals (\"Unternehmen\") und dem unterzeichnenden Mieter (\"Mieter\") geschlossen.",
+                rentalTermsTitle: "MIETBEDINGUNGEN:",
+                rentalTerm1: "Mietzeitraum: Fahrräder werden für mindestens 24 Stunden vermietet. Zusätzliche Tage können zum Tagespreis berechnet werden.",
+                rentalPeriodLabel: "Mietzeitraum:",
+                rentalPeriodText: "Fahrräder werden für mindestens 24 Stunden vermietet. Zusätzliche Tage können zum Tagespreis berechnet werden.",
+                rentalTerm2: "Sicherheitskaution: Eine Sicherheitskaution von 200 $ USD ist erforderlich und wird von PayPal gehalten. Die Kaution wird innerhalb von 7-10 Werktagen nach Fahrradrückgabe erstattet, vorbehaltlich Inspektion.",
+                securityDepositLabel: "Sicherheitskaution:",
+                securityDepositText: "Eine Sicherheitskaution von 200 $ USD ist erforderlich und wird von PayPal gehalten. Die Kaution wird innerhalb von 7-10 Werktagen nach Fahrradrückgabe erstattet, vorbehaltlich Inspektion.",
+                rentalTerm3: "Verspätete Rückgaben: Verspätete Rückgaben verursachen zusätzliche Gebühren von 50 $ USD pro Stunde nach der vereinbarten Zeit.",
+                lateReturnsLabel: "Verspätete Rückgaben:",
+                lateReturnsText: "Verspätete Rückgaben verursachen zusätzliche Gebühren von 50 $ pro Stunde nach der vereinbarten Zeit.",
+                rentalTerm4: "Wartung: Der Mieter ist für grundlegende Wartung verantwortlich. Jeglicher Schaden über normalen Verschleiß hinaus wird von der Sicherheitskaution abgebucht.",
+                maintenanceLabel: "Wartung:",
+                maintenanceText: "Der Mieter ist für grundlegende Wartung verantwortlich. Jeglicher Schaden über normalen Verschleiß hinaus wird von der Sicherheitskaution abgebucht.",
+                renterResponsibilitiesTitle: "MIETERPFLICHTEN:",
+                responsibility1: "Fahrrad in demselben Zustand zurückgeben, wie erhalten, normaler Verschleiß ausgenommen.",
+                responsibility2: "Mechanische Probleme sofort melden, um zusätzliche Gebühren zu vermeiden.",
+                responsibility3: "Fahrrad nur für vorgesehene Zwecke auf gepflasterten Straßen und Fahrradwegen verwenden.",
+                responsibility4: "Alle örtlichen Verkehrsregeln und -vorschriften einhalten.",
+                responsibility5: "Genehmigten Helm jederzeit während der Fahrt tragen.",
+                liabilityReleaseTitle: "HAFTUNGSAUSSCHLUSS:",
+                liabilityReleaseText: "Als Gegenleistung für die Erlaubnis, das Fahrrad zu benutzen, entbinde ich hiermit Cartagena Bike Rentals, seine Eigentümer, Agenten oder Mitarbeiter von jeglicher Haftung, Ansprüchen, Forderungen, Klagen oder Klagegründen, die sich aus oder im Zusammenhang mit Verlust, Schaden oder Verletzung, einschließlich Tod, ergeben, die beim Gebrauch des Fahrrads erlitten werden könnten, sei es durch Fahrlässigkeit oder anderweitig.",
+                risksText: "Ich verstehe und erkenne an, dass Fahrradfahren inhärente Risiken beinhaltet, einschließlich aber nicht beschränkt auf:",
+                risk1: "Verkehrsunfälle und Kollisionen",
+                risk2: "Stürze und Verletzungen auf unebenen Oberflächen",
+                risk3: "Wetterbedingte Vorfälle",
+                risk4: "Diebstahl oder Vandalismus",
+                risk5: "Mechanische Ausfälle",
+                assumptionOfRiskLabel: "RISIKOÜBERNAHME:",
+                assumptionOfRiskText: "Ich übernehme freiwillig alle Risiken, die mit der Fahrradnutzung verbunden sind, einschließlich Verletzung oder Tod.",
+                indemnificationLabel: "ENTSCHÄDIGUNG:",
+                indemnificationText: "Ich verpflichte mich, Cartagena Bike Rentals von jeglichen Ansprüchen freizustellen, die sich aus meiner Nutzung des Fahrrads ergeben.",
+                agreementAcknowledgment: "Durch Unterschrift unten bestätige ich, dass ich alle Bedingungen dieser Vereinbarung gelesen, verstanden und akzeptiert habe.",
+                personalInfoTitle: "Persönliche Informationen",
+                personalInfoDesc: "Bitte geben Sie Ihre persönlichen Informationen für diese Vereinbarung an:",
+                fullNameLabel: "Vollständiger Name:",
+                dateOfBirthLabel: "Geburtsdatum:",
+                phoneLabel: "Telefonnummer:",
+                addressLabel: "Adresse:",
+                emergencyContactLabel: "Notfallkontakt:",
+                emergencyPhoneLabel: "Notfalltelefon:",
+                dataPrivacyTitle: "Datenschutzgenehmigung",
+                dataPrivacyDesc: "Hiermit autorisiere ich die Erfassung, Nutzung und Speicherung meiner oben angegebenen persönlichen Informationen für die Zwecke dieser Fahrradvermietungsvereinbarung, einschließlich aber nicht beschränkt auf:",
+                dataPurpose1: "Verarbeitung von Miettransaktionen und Zahlungen",
+                dataPurpose2: "Notfallkontaktzwecke",
+                dataPurpose3: "Rechtliche Compliance und Haftungsschutz",
+                dataPurpose4: "Kommunikation bezüglich der Mietvereinbarung",
+                dataAuthorizationLabel: "Ich autorisiere die Verwendung meiner persönlichen Daten wie oben beschrieben und stimme den Bedingungen dieser Vereinbarung zu.",
+                signatureTitle: "Bitte unterschreiben Sie unten:",
+                emailLabel: "Ihre E-Mail-Adresse (Sie erhalten eine Kopie):",
+                emailNote: "Eine Kopie wird auch automatisch an den Administrator gesendet.",
+                paymentTitle: "Sicherheitskaution Zahlung",
+                paymentAmount: "Betrag: 200 $ USD",
+                paymentDesc: "Diese Sicherheitskaution wird von PayPal gehalten und bei Abschluss der Vertragsbedingungen erstattet.",
+                securePaymentLabel: "🔒 Sichere Zahlung:",
+                securePaymentText: "Ihre Zahlungsinformationen werden sicher von PayPal verarbeitet. Die Gelder werden bis zum Abschluss der Vereinbarung in Treuhand gehalten.",
+                bankInfoTitle: "Bankinformationen (Alternative Zahlungsmethode)",
+                bankInfoDesc: "Sie können auch Ihre Bankinformationen für Direktüberweisung oder Überweisung angeben:",
+                accountHolderNameLabel: "Kontoinhaber Name:",
+                bankNameLabel: "Bank Name:",
+                accountNumberLabel: "Kontonummer:",
+                routingNumberLabel: "Bankleitzahl:",
+                creditCardTitle: "Kreditkarteninformationen",
+                creditCardDesc: "Geben Sie Ihre Kreditkartendaten für die Sicherheitskaution ein:",
+                cardholderNameLabel: "Karteninhaber Name:",
+                cardNumberLabel: "Kartennummer:",
+                expirationDateLabel: "Ablaufdatum:",
+                cvvLabel: "CVV:",
+                secureCardLabel: "🔒 Sichere Kartenverarbeitung:",
+                secureCardText: "Ihre Kreditkarteninformationen werden verschlüsselt und sicher verarbeitet. Wir speichern Ihre Kartendaten nicht.",
+                clearSignatureBtn: "Unterschrift Löschen",
+                saveDocumentBtn: "Dokument Signieren und Speichern",
+                sendEmailBtn: "Kopie per E-Mail Senden"
+            }
+        };
+
+        // Language switching function
+        function changeLanguage(lang) {
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    if (element.tagName === 'INPUT' && element.type === 'submit') {
+                        element.value = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            localStorage.setItem('selectedLanguage', lang);
+        }
+
+        // Initialize language selector
+        document.getElementById('languageSelect').addEventListener('change', function(e) {
+            changeLanguage(e.target.value);
+        });
+
+        // Load saved language or default to English
+        const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+        document.getElementById('languageSelect').value = savedLanguage;
+        changeLanguage(savedLanguage);
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        const clearBtn = document.getElementById('clearBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const emailBtn = document.getElementById('emailBtn');
+        const emailInput = document.getElementById('emailInput');
+        
+        // Personal information elements
+        const fullName = document.getElementById('fullName');
+        const dateOfBirth = document.getElementById('dateOfBirth');
+        const phone = document.getElementById('phone');
+        const address = document.getElementById('address');
+        const emergencyContact = document.getElementById('emergencyContact');
+        const emergencyPhone = document.getElementById('emergencyPhone');
+        const dataAuthorization = document.getElementById('dataAuthorization');
+        
+        // Payment status
+        let paymentCompleted = false;
+        const paymentStatus = document.getElementById('payment-status');
+
+        let isDrawing = false;
+
+        // PayPal Button Initialization
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '200.00',
+                            currency_code: 'USD'
+                        },
+                        description: 'Security Deposit - Agreement Document'
+                    }],
+                    application_context: {
+                        shipping_preference: 'NO_SHIPPING'
+                    }
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.authorize().then(function(authorization) {
+                    // Payment authorized (funds held)
+                    paymentCompleted = true;
+                    paymentStatus.style.display = 'block';
+                    paymentStatus.style.backgroundColor = '#d4edda';
+                    paymentStatus.style.color = '#155724';
+                    paymentStatus.style.border = '1px solid #c3e6cb';
+                    paymentStatus.innerHTML = '<strong>✓ Payment Authorized</strong><br>$200 USD security deposit has been authorized and held by PayPal.<br>Order ID: ' + data.orderID;
+                    
+                    alert('Payment authorized successfully! $200 USD deposit is now held by PayPal. You can now sign and save the document.');
+                });
+            },
+            onError: function(err) {
+                paymentStatus.style.display = 'block';
+                paymentStatus.style.backgroundColor = '#f8d7da';
+                paymentStatus.style.color = '#721c24';
+                paymentStatus.style.border = '1px solid #f5c6cb';
+                paymentStatus.innerHTML = '<strong>✗ Payment Failed</strong><br>Please try again or contact support.';
+                console.error('PayPal payment error:', err);
+            }
+        }).render('#paypal-button-container');
+
+        // Personal information validation
+        function validatePersonalInfo() {
+            const name = fullName.value.trim();
+            const dob = dateOfBirth.value;
+            const phoneValue = phone.value.trim();
+            const addressValue = address.value.trim();
+            const emergencyName = emergencyContact.value.trim();
+            const emergencyPhoneValue = emergencyPhone.value.trim();
+            const dataAuth = dataAuthorization.checked;
+
+            if (!name) {
+                alert('Please enter your full name.');
+                fullName.focus();
+                return false;
+            }
+
+            if (!dob) {
+                alert('Please enter your date of birth.');
+                dateOfBirth.focus();
+                return false;
+            }
+
+            if (!phoneValue) {
+                alert('Please enter your phone number.');
+                phone.focus();
+                return false;
+            }
+
+            if (!addressValue) {
+                alert('Please enter your address.');
+                address.focus();
+                return false;
+            }
+
+            if (!emergencyName) {
+                alert('Please enter an emergency contact name.');
+                emergencyContact.focus();
+                return false;
+            }
+
+            if (!emergencyPhoneValue) {
+                alert('Please enter an emergency contact phone number.');
+                emergencyPhone.focus();
+                return false;
+            }
+
+            if (!dataAuth) {
+                alert('Please check the data authorization box to continue.');
+                dataAuthorization.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Bank and credit card information validation
+        function validatePaymentInfo() {
+            const accountHolder = document.getElementById('accountHolderName').value.trim();
+            const bankName = document.getElementById('bankName').value.trim();
+            const accountNumber = document.getElementById('accountNumber').value.trim();
+            const routingNumber = document.getElementById('routingNumber').value.trim();
+            const cardholderName = document.getElementById('cardholderName').value.trim();
+            const cardNumber = document.getElementById('cardNumber').value.trim();
+            const expirationDate = document.getElementById('expirationDate').value.trim();
+            const cvv = document.getElementById('cvv').value.trim();
+
+            // Check if at least one payment method is provided
+            const hasBankInfo = accountHolder || bankName || accountNumber || routingNumber;
+            const hasCardInfo = cardholderName || cardNumber || expirationDate || cvv;
+            const hasPayPal = paymentCompleted;
+
+            if (!hasBankInfo && !hasCardInfo && !hasPayPal) {
+                alert('Please provide payment information using PayPal, bank details, or credit card.');
+                return false;
+            }
+
+            // Validate bank information if provided
+            if (hasBankInfo) {
+                if (!accountHolder) {
+                    alert('Please enter the account holder name.');
+                    document.getElementById('accountHolderName').focus();
+                    return false;
+                }
+                if (!bankName) {
+                    alert('Please enter the bank name.');
+                    document.getElementById('bankName').focus();
+                    return false;
+                }
+                if (!accountNumber || accountNumber.length < 8) {
+                    alert('Please enter a valid account number (at least 8 digits).');
+                    document.getElementById('accountNumber').focus();
+                    return false;
+                }
+                if (!routingNumber || routingNumber.length !== 9) {
+                    alert('Please enter a valid 9-digit routing number.');
+                    document.getElementById('routingNumber').focus();
+                    return false;
+                }
+            }
+
+            // Validate credit card information if provided
+            if (hasCardInfo) {
+                if (!cardholderName) {
+                    alert('Please enter the cardholder name.');
+                    document.getElementById('cardholderName').focus();
+                    return false;
+                }
+                if (!cardNumber || cardNumber.replace(/\s/g, '').length < 13) {
+                    alert('Please enter a valid card number.');
+                    document.getElementById('cardNumber').focus();
+                    return false;
+                }
+                if (!expirationDate || !/^\d{2}\/\d{2}$/.test(expirationDate)) {
+                    alert('Please enter expiration date in MM/YY format.');
+                    document.getElementById('expirationDate').focus();
+                    return false;
+                }
+                if (!cvv || cvv.length < 3) {
+                    alert('Please enter a valid CVV (at least 3 digits).');
+                    document.getElementById('cvv').focus();
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Set canvas background to white
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Start drawing
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.moveTo(x, y);
+            e.preventDefault();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            e.preventDefault();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Clear signature
+        clearBtn.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // Save signature
+        saveBtn.addEventListener('click', () => {
+            if (!validatePersonalInfo()) {
+                return;
+            }
+            
+            if (!validatePaymentInfo()) {
+                return;
+            }
+            
+            const dataURL = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'signed_document.png';
+            link.href = dataURL;
+            link.click();
+            alert('Signature saved as signed_document.png\n\nPayment information has been validated.');
+        });
+
+        // Send copy via email
+        emailBtn.addEventListener('click', () => {
+            if (!validatePersonalInfo()) {
+                return;
+            }
+            
+            if (!validatePaymentInfo()) {
+                return;
+            }
+            
+            const userEmail = emailInput.value.trim();
+            const adminEmail = 'lidag57@hotmail.com';
+            
+            if (!userEmail) {
+                alert('Please enter your email address first.');
+                return;
+            }
+            
+            const dataURL = canvas.toDataURL('image/png');
+            const subject = encodeURIComponent('Signed Bike Rental Agreement - Payment Validated');
+            const body = encodeURIComponent(`Please find attached your signed bike rental agreement.\n\nAgreement Details:\n- Name: ${fullName.value}\n- Date of Birth: ${dateOfBirth.value}\n- Phone: ${phone.value}\n- Address: ${address.value}\n- Emergency Contact: ${emergencyContact.value} (${emergencyPhone.value})\n- Email: ${userEmail}\n\nPayment information has been validated.\nSigned on: ${new Date().toLocaleString()}\n\nSignature image: ${dataURL}`);
+            
+            // Send to admin email
+            const adminMailtoLink = `mailto:${adminEmail}?subject=${subject}&body=${body}&cc=${userEmail}`;
+            window.open(adminMailtoLink);
+            
+            alert('Email client opened with your signed agreement. The document will be sent to both your email and the administrator. Please send the email.\n\nPayment information has been validated.');
+        });
+    </script>
+</body>
+</html>
