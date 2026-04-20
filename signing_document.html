@@ -877,6 +877,39 @@
 
         // Personal information validation
         function validatePersonalInfo() {
+            // Validate rental term checkboxes
+            const rentalTerm1Check = document.getElementById('rentalTerm1Check').checked;
+            const rentalTerm2Check = document.getElementById('rentalTerm2Check').checked;
+            const rentalTerm3Check = document.getElementById('rentalTerm3Check').checked;
+            const rentalTerm4Check = document.getElementById('rentalTerm4Check').checked;
+            
+            if (!rentalTerm1Check || !rentalTerm2Check || !rentalTerm3Check || !rentalTerm4Check) {
+                alert('❌ Please check all rental term checkboxes to continue.');
+                return false;
+            }
+
+            // Validate renter responsibility checkboxes
+            const resp1Check = document.getElementById('resp1Check').checked;
+            const resp2Check = document.getElementById('resp2Check').checked;
+            const resp3Check = document.getElementById('resp3Check').checked;
+            const resp4Check = document.getElementById('resp4Check').checked;
+            const resp5Check = document.getElementById('resp5Check').checked;
+            
+            if (!resp1Check || !resp2Check || !resp3Check || !resp4Check || !resp5Check) {
+                alert('❌ Please check all renter responsibility checkboxes to continue.');
+                return false;
+            }
+
+            // Validate liability release checkboxes
+            const liabilityCheck = document.getElementById('liabilityCheck').checked;
+            const riskAssumptionCheck = document.getElementById('riskAssumptionCheck').checked;
+            const indemnificationCheck = document.getElementById('indemnificationCheck').checked;
+            
+            if (!liabilityCheck || !riskAssumptionCheck || !indemnificationCheck) {
+                alert('❌ Please check all liability release checkboxes to continue.');
+                return false;
+            }
+
             const name = fullName.value.trim();
             const dob = dateOfBirth.value;
             const phoneValue = phone.value.trim();
@@ -1060,10 +1093,13 @@
             
             const dataURL = canvas.toDataURL('image/png');
             const link = document.createElement('a');
-            link.download = 'signed_document.png';
+            link.download = 'signed_bike_rental_agreement.png';
             link.href = dataURL;
             link.click();
-            alert('Signature saved as signed_document.png\n\nPayment information has been validated.');
+            
+            // Show success message
+            const successMsg = `✓ SUCCESS!\n\nYour signed document has been saved:\n"signed_bike_rental_agreement.png"\n\nYou can now use the "Send Copy via Email" button to send it to your email.`;
+            alert(successMsg);
         });
 
         // Send copy via email
