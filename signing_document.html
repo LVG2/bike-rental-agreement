@@ -238,6 +238,30 @@
         <button id="emailBtn" data-translate="sendEmailBtn">Send Copy via Email</button>
     </div>
 
+    <!-- Success Message Modal -->
+    <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background-color: white; padding: 40px; border-radius: 10px; text-align: center; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h2 style="color: #28a745; font-size: 28px; margin-bottom: 10px;">✓ SUCCESS!</h2>
+            <h3 style="color: #333; margin-bottom: 20px;">Thank you for completing the form</h3>
+            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px; text-align: left;">
+                <p style="margin: 10px 0;"><strong>✓ Your signed agreement has been saved</strong></p>
+                <p style="margin: 10px 0;">📁 File: <span id="savedFileName">signed_bike_rental_agreement.png</span></p>
+                <p style="margin: 10px 0;">👤 Name: <span id="savedName" style="font-weight: bold;"></span></p>
+                <p style="margin: 10px 0;">💰 Payment Status: <span id="paymentStatus2" style="color: #28a745; font-weight: bold;">Processed</span></p>
+                <p style="margin: 10px 0;">📅 Submitted: <span id="submissionTime"></span></p>
+            </div>
+            <p style="color: #666; margin-bottom: 20px;">Your document has been downloaded to your device. You can also send a copy via email using the email button below.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button onclick="document.getElementById('successModal').style.display='none';" style="padding: 12px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                    Close
+                </button>
+                <button onclick="location.reload();" style="padding: 12px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                    New Form
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Translation system
         const translations = {
@@ -1097,9 +1121,10 @@
             link.href = dataURL;
             link.click();
             
-            // Show success message
-            const successMsg = `✓ SUCCESS!\n\nYour signed document has been saved:\n"signed_bike_rental_agreement.png"\n\nYou can now use the "Send Copy via Email" button to send it to your email.`;
-            alert(successMsg);
+            // Show success modal
+            document.getElementById('savedName').textContent = fullName.value;
+            document.getElementById('submissionTime').textContent = new Date().toLocaleString();
+            document.getElementById('successModal').style.display = 'flex';
         });
 
         // Send copy via email
@@ -1128,7 +1153,7 @@
             const adminMailtoLink = `mailto:${adminEmail}?subject=${subject}&body=${body}&cc=${userEmail}`;
             window.open(adminMailtoLink);
             
-            alert('Email client opened with your signed agreement. The document will be sent to both your email and the administrator. Please send the email.\n\nPayment information has been validated.');
+            alert('✓ Email client has opened with your signed agreement.\n\nPlease complete these steps:\n1. Review the email content\n2. Click SEND\n\nThe email will be sent to:\n- Your email: ' + userEmail + '\n- Admin: ' + adminEmail);
         });
     </script>
 </body>
