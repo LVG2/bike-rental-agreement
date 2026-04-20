@@ -1109,129 +1109,174 @@
 
         // Create complete PDF with document, checkboxes, and signature
         function generateCompletePDF() {
-            // Create a container for the PDF content
-            const pdfContainer = document.createElement('div');
-            pdfContainer.id = 'pdf-content-container';
-            pdfContainer.style.width = '8.5in';
-            pdfContainer.style.minHeight = '11in';
-            pdfContainer.style.backgroundColor = 'white';
-            pdfContainer.style.color = '#000';
-            pdfContainer.style.padding = '0.5in';
-            pdfContainer.style.fontFamily = 'Arial, sans-serif';
-            pdfContainer.style.fontSize = '12px';
-            pdfContainer.style.lineHeight = '1.5';
-            pdfContainer.style.position = 'absolute';
-            pdfContainer.style.top = '0';
-            pdfContainer.style.left = '0';
-            pdfContainer.style.zIndex = '9999';
-            pdfContainer.style.boxSizing = 'border-box';
+            try {
+                // Create PDF using jsPDF directly
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
 
-            // Clone the document and preserve checkbox states
-            const docClone = document.querySelector('.document').cloneNode(true);
+                // Set font
+                doc.setFont("helvetica");
 
-            // Update checkboxes to show checked state visually
-            const checkboxes = docClone.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                const originalCheckbox = document.getElementById(checkbox.id);
-                if (originalCheckbox && originalCheckbox.checked) {
-                    // Replace checkbox with checked symbol
-                    const checkedSymbol = document.createElement('span');
-                    checkedSymbol.textContent = '☑';
-                    checkedSymbol.style.color = '#28a745';
-                    checkedSymbol.style.fontSize = '16px';
-                    checkedSymbol.style.marginRight = '5px';
-                    checkbox.parentNode.replaceChild(checkedSymbol, checkbox);
-                } else {
-                    // Replace checkbox with unchecked symbol
-                    const uncheckedSymbol = document.createElement('span');
-                    uncheckedSymbol.textContent = '☐';
-                    uncheckedSymbol.style.color = '#666';
-                    uncheckedSymbol.style.fontSize = '16px';
-                    uncheckedSymbol.style.marginRight = '5px';
-                    checkbox.parentNode.replaceChild(uncheckedSymbol, checkbox);
-                }
-            });
+                // Title
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text("BIKE RENTAL & LIABILITY RELEASE AGREEMENT", 20, 30);
+                doc.setFont("helvetica", "normal");
 
-            pdfContainer.appendChild(docClone);
-
-            // Add spacing and signature section
-            const signatureDiv = document.createElement('div');
-            signatureDiv.style.marginTop = '30px';
-            signatureDiv.style.borderTop = '2px solid #000';
-            signatureDiv.style.paddingTop = '20px';
-            signatureDiv.style.pageBreakBefore = 'always';
-
-            const signatureTitle = document.createElement('h3');
-            signatureTitle.textContent = 'Digital Signature:';
-            signatureTitle.style.fontSize = '14px';
-            signatureTitle.style.marginBottom = '10px';
-            signatureDiv.appendChild(signatureTitle);
-
-            // Add signature image
-            const signatureImage = document.createElement('img');
-            signatureImage.src = canvas.toDataURL('image/png');
-            signatureImage.style.width = '100%';
-            signatureImage.style.maxWidth = '400px';
-            signatureImage.style.border = '1px solid #ccc';
-            signatureImage.style.marginBottom = '20px';
-            signatureDiv.appendChild(signatureImage);
-
-            // Add renter information
-            const infoDiv = document.createElement('div');
-            infoDiv.style.marginTop = '20px';
-            infoDiv.style.borderTop = '2px solid #000';
-            infoDiv.style.paddingTop = '20px';
-            infoDiv.style.backgroundColor = '#f5f5f5';
-            infoDiv.style.padding = '15px';
-
-            const infoTitle = document.createElement('h3');
-            infoTitle.textContent = 'Renter Information:';
-            infoTitle.style.fontSize = '14px';
-            infoTitle.style.marginBottom = '10px';
-            infoDiv.appendChild(infoTitle);
-
-            const infoContent = document.createElement('div');
-            infoContent.style.fontSize = '11px';
-            infoContent.innerHTML = `
-                <p><strong>Name:</strong> ${fullName.value}</p>
-                <p><strong>Date of Birth:</strong> ${dateOfBirth.value}</p>
-                <p><strong>Phone:</strong> ${phone.value}</p>
-                <p><strong>Address:</strong> ${address.value}</p>
-                <p><strong>Email:</strong> ${emailInput.value}</p>
-                <p><strong>Emergency Contact:</strong> ${emergencyContact.value}</p>
-                <p><strong>Emergency Phone:</strong> ${emergencyPhone.value}</p>
-                <p><strong>Signed on:</strong> ${new Date().toLocaleString()}</p>
-            `;
-            infoDiv.appendChild(infoContent);
-
-            pdfContainer.appendChild(signatureDiv);
-            pdfContainer.appendChild(infoDiv);
-
-            // Temporarily add to body so html2canvas can render it
-            document.body.appendChild(pdfContainer);
-
-            // Generate PDF after a small delay to ensure rendering
-            setTimeout(() => {
-                const opt = {
-                    margin: [0.3, 0.3, 0.3, 0.3],
-                    filename: 'signed_bike_rental_agreement.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        logging: true, // Enable logging to debug
-                        backgroundColor: '#fff',
-                        allowTaint: true,
-                        foreignObjectRendering: true
-                    },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                };
-
-                html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                    // Remove the container after PDF is generated
-                    document.body.removeChild(pdfContainer);
+                // Get checkbox states
+                const checkboxStates = {};
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => {
+                    checkboxStates[cb.id] = cb.checked;
                 });
-            }, 500); // Increased delay for better rendering
+
+                let yPosition = 50;
+
+                // Rental Terms
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+                doc.text("RENTAL TERMS:", 20, yPosition);
+                doc.setFont("helvetica", "normal");
+                yPosition += 10;
+
+                doc.setFontSize(10);
+                doc.text(`${checkboxStates.rentalTerm1Check ? '[X]' : '[ ]'} Rental Period: Bikes are rented for a minimum of 24 hours.`, 25, yPosition);
+                yPosition += 8;
+                doc.text(`Additional days may be charged at the daily rate.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.rentalTerm2Check ? '[X]' : '[ ]'} Security Deposit: A $300 security deposit is required`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`and will be held by PayPal. Deposit will be refunded within`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`7-10 business days after bike return, subject to inspection.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.rentalTerm3Check ? '[X]' : '[ ]'} Late Return: Bikes returned after the rental period will`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`be charged an additional daily rate.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.rentalTerm4Check ? '[X]' : '[ ]'} Damage: Renter is responsible for any damage to the`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`bike beyond normal wear and tear.`, 25, yPosition);
+                yPosition += 15;
+
+                // Check if we need a new page
+                if (yPosition > 250) {
+                    doc.addPage();
+                    yPosition = 30;
+                }
+
+                // Responsibilities
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+                doc.text("RENTER RESPONSIBILITIES:", 20, yPosition);
+                doc.setFont("helvetica", "normal");
+                yPosition += 10;
+
+                doc.setFontSize(10);
+                doc.text(`${checkboxStates.resp1Check ? '[X]' : '[ ]'} Renter must be at least 18 years old and possess a valid`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`driver's license.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.resp2Check ? '[X]' : '[ ]'} Renter must wear a helmet at all times while operating`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`the bike.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.resp3Check ? '[X]' : '[ ]'} Renter must follow all local traffic laws and regulations.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.resp4Check ? '[X]' : '[ ]'} Renter must return the bike in the same condition as received.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.resp5Check ? '[X]' : '[ ]'} Renter must report any accidents or damage immediately.`, 25, yPosition);
+                yPosition += 15;
+
+                // Check if we need a new page
+                if (yPosition > 220) {
+                    doc.addPage();
+                    yPosition = 30;
+                }
+
+                // Liability Release
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+                doc.text("LIABILITY RELEASE:", 20, yPosition);
+                doc.setFont("helvetica", "normal");
+                yPosition += 10;
+
+                doc.setFontSize(10);
+                doc.text(`${checkboxStates.liabilityCheck ? '[X]' : '[ ]'} Renter assumes all risks associated with bike rental`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`and operation.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.riskAssumptionCheck ? '[X]' : '[ ]'} Renter releases Company from all liability for injuries`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`or damages.`, 25, yPosition);
+                yPosition += 8;
+
+                doc.text(`${checkboxStates.indemnificationCheck ? '[X]' : '[ ]'} Renter agrees to indemnify Company against all claims`, 25, yPosition);
+                yPosition += 6;
+                doc.text(`and losses.`, 25, yPosition);
+                yPosition += 15;
+
+                // Personal Information
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+                doc.text("RENTER INFORMATION:", 20, yPosition);
+                doc.setFont("helvetica", "normal");
+                yPosition += 10;
+
+                doc.setFontSize(10);
+                doc.text(`Name: ${fullName.value}`, 25, yPosition);
+                yPosition += 8;
+                doc.text(`Date of Birth: ${dateOfBirth.value}`, 25, yPosition);
+                yPosition += 8;
+                doc.text(`Phone: ${phone.value}`, 25, yPosition);
+                yPosition += 8;
+                doc.text(`Address: ${address.value}`, 25, yPosition);
+                yPosition += 8;
+                doc.text(`Email: ${emailInput.value}`, 25, yPosition);
+                yPosition += 8;
+                doc.text(`Emergency Contact: ${emergencyContact.value}`, 25, yPosition);
+                yPosition += 8;
+                doc.text(`Emergency Phone: ${emergencyPhone.value}`, 25, yPosition);
+                yPosition += 8;
+                doc.text(`Signed on: ${new Date().toLocaleString()}`, 25, yPosition);
+                yPosition += 15;
+
+                // Add signature if available
+                if (canvas && yPosition < 200) {
+                    try {
+                        const signatureDataURL = canvas.toDataURL('image/png');
+                        // Add signature section
+                        doc.setFontSize(14);
+                        doc.setFont("helvetica", "bold");
+                        doc.text("DIGITAL SIGNATURE:", 20, yPosition);
+                        yPosition += 10;
+
+                        // Add signature image (scaled down)
+                        doc.addImage(signatureDataURL, 'PNG', 25, yPosition, 60, 20);
+                    } catch (error) {
+                        console.log('Could not add signature to PDF:', error);
+                        doc.setFontSize(10);
+                        doc.setFont("helvetica", "normal");
+                        doc.text('Signature: [Digital signature captured]', 25, yPosition);
+                    }
+                }
+
+                // Save the PDF
+                doc.save('signed_bike_rental_agreement.pdf');
+                console.log('PDF generated successfully');
+
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                alert('PDF generation failed. Please try again. Error: ' + error.message);
+            }
         }
 
         // Save signature
