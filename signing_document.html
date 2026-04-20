@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Signing</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AaAJv2C4Kofz0YqJdI9-rD6ERTtMpZYSStJEeqHCzC8TPbLVu3335Pzzeu4Bskrboct75EknAs_OidyV&components=buttons&currency=USD&intent=authorize"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -245,7 +246,7 @@
             <h3 style="color: #333; margin-bottom: 20px;">Thank you for completing the form</h3>
             <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px; text-align: left;">
                 <p style="margin: 10px 0;"><strong>✓ Your signed agreement has been saved</strong></p>
-                <p style="margin: 10px 0;">📁 File: <span id="savedFileName">signed_bike_rental_agreement.png</span></p>
+                <p style="margin: 10px 0;">📁 File: <span id="savedFileName">signed_bike_rental_agreement.pdf</span></p>
                 <p style="margin: 10px 0;">👤 Name: <span id="savedName" style="font-weight: bold;"></span></p>
                 <p style="margin: 10px 0;">💰 Payment Status: <span id="paymentStatus2" style="color: #28a745; font-weight: bold;">Processed</span></p>
                 <p style="margin: 10px 0;">📅 Submitted: <span id="submissionTime"></span></p>
@@ -1116,11 +1117,17 @@
             //     return;
             // }
             
-            const dataURL = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.download = 'signed_bike_rental_agreement.png';
-            link.href = dataURL;
-            link.click();
+            // Generate PDF of the entire document
+            const element = document.querySelector('.document');
+            const opt = {
+                margin: 1,
+                filename: 'signed_bike_rental_agreement.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
             
             // Show success modal
             document.getElementById('savedName').textContent = fullName.value;
@@ -1147,15 +1154,14 @@
                 return;
             }
             
-            const dataURL = canvas.toDataURL('image/png');
             const subject = encodeURIComponent('Signed Bike Rental Agreement');
-            const body = encodeURIComponent(`Please find attached your signed bike rental agreement.\n\nAgreement Details:\n- Name: ${fullName.value}\n- Date of Birth: ${dateOfBirth.value}\n- Phone: ${phone.value}\n- Address: ${address.value}\n- Emergency Contact: ${emergencyContact.value} (${emergencyPhone.value})\n- Email: ${userEmail}\n\nSigned on: ${new Date().toLocaleString()}\n\nSignature image: ${dataURL}`);
+            const body = encodeURIComponent(`Please find attached your signed bike rental agreement PDF.\n\nAgreement Details:\n- Name: ${fullName.value}\n- Date of Birth: ${dateOfBirth.value}\n- Phone: ${phone.value}\n- Address: ${address.value}\n- Emergency Contact: ${emergencyContact.value} (${emergencyPhone.value})\n- Email: ${userEmail}\n\nSigned on: ${new Date().toLocaleString()}\n\nPlease attach the downloaded PDF file: signed_bike_rental_agreement.pdf`);
             
             // Send to admin email
             const adminMailtoLink = `mailto:${adminEmail}?subject=${subject}&body=${body}&cc=${userEmail}`;
             window.open(adminMailtoLink);
             
-            alert('✓ Email client has opened with your signed agreement.\n\nPlease complete these steps:\n1. Review the email content\n2. Click SEND\n\nThe email will be sent to:\n- Your email: ' + userEmail + '\n- Admin: ' + adminEmail);
+            alert('✓ Email client has opened with your agreement details.\n\nPlease complete these steps:\n1. Attach the downloaded PDF: signed_bike_rental_agreement.pdf\n2. Review the email content\n3. Click SEND\n\nThe email will be sent to:\n- Your email: ' + userEmail + '\n- Admin: ' + adminEmail);
         });
     </script>
 </body>
