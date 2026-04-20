@@ -1111,9 +1111,10 @@
                 return;
             }
             
-            if (!validatePaymentInfo()) {
-                return;
-            }
+            // Payment validation removed - document can be saved without payment
+            // if (!validatePaymentInfo()) {
+            //     return;
+            // }
             
             const dataURL = canvas.toDataURL('image/png');
             const link = document.createElement('a');
@@ -1133,9 +1134,10 @@
                 return;
             }
             
-            if (!validatePaymentInfo()) {
-                return;
-            }
+            // Payment validation removed - email can be sent without payment
+            // if (!validatePaymentInfo()) {
+            //     return;
+            // }
             
             const userEmail = emailInput.value.trim();
             const adminEmail = 'lidag57@hotmail.com';
@@ -1146,8 +1148,8 @@
             }
             
             const dataURL = canvas.toDataURL('image/png');
-            const subject = encodeURIComponent('Signed Bike Rental Agreement - Payment Validated');
-            const body = encodeURIComponent(`Please find attached your signed bike rental agreement.\n\nAgreement Details:\n- Name: ${fullName.value}\n- Date of Birth: ${dateOfBirth.value}\n- Phone: ${phone.value}\n- Address: ${address.value}\n- Emergency Contact: ${emergencyContact.value} (${emergencyPhone.value})\n- Email: ${userEmail}\n\nPayment information has been validated.\nSigned on: ${new Date().toLocaleString()}\n\nSignature image: ${dataURL}`);
+            const subject = encodeURIComponent('Signed Bike Rental Agreement');
+            const body = encodeURIComponent(`Please find attached your signed bike rental agreement.\n\nAgreement Details:\n- Name: ${fullName.value}\n- Date of Birth: ${dateOfBirth.value}\n- Phone: ${phone.value}\n- Address: ${address.value}\n- Emergency Contact: ${emergencyContact.value} (${emergencyPhone.value})\n- Email: ${userEmail}\n\nSigned on: ${new Date().toLocaleString()}\n\nSignature image: ${dataURL}`);
             
             // Send to admin email
             const adminMailtoLink = `mailto:${adminEmail}?subject=${subject}&body=${body}&cc=${userEmail}`;
