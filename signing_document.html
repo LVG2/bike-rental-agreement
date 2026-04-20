@@ -1106,6 +1106,73 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         });
 
+        // Create complete PDF with document, checkboxes, and signature
+        function generateCompletePDF() {
+            // Create a container for the PDF content
+            const pdfContainer = document.createElement('div');
+            pdfContainer.style.backgroundColor = 'white';
+            pdfContainer.style.padding = '40px';
+            pdfContainer.style.fontFamily = 'Arial, sans-serif';
+            
+            // Clone the document content
+            const docClone = document.querySelector('.document').cloneNode(true);
+            
+            // Get the signature canvas and convert to image
+            const signatureImage = document.createElement('img');
+            signatureImage.src = canvas.toDataURL('image/png');
+            signatureImage.style.width = '100%';
+            signatureImage.style.maxWidth = '400px';
+            signatureImage.style.border = '1px solid #ccc';
+            signatureImage.style.marginTop = '20px';
+            
+            // Add title for signature
+            const signatureTitle = document.createElement('h3');
+            signatureTitle.textContent = 'Digital Signature:';
+            signatureTitle.style.marginTop = '30px';
+            signatureTitle.style.marginBottom = '10px';
+            
+            // Add personal info section
+            const infoSection = document.createElement('div');
+            infoSection.style.marginTop = '30px';
+            infoSection.style.borderTop = '2px solid #ccc';
+            infoSection.style.paddingTop = '20px';
+            infoSection.style.backgroundColor = '#f9f9f9';
+            infoSection.style.padding = '20px';
+            
+            const infoTitle = document.createElement('h3');
+            infoTitle.textContent = 'Renter Information:';
+            infoSection.appendChild(infoTitle);
+            
+            const infoDetails = document.createElement('p');
+            infoDetails.style.whiteSpace = 'pre-line';
+            infoDetails.textContent = `Name: ${fullName.value}
+Date of Birth: ${dateOfBirth.value}
+Phone: ${phone.value}
+Address: ${address.value}
+Email: ${emailInput.value}
+Emergency Contact: ${emergencyContact.value}
+Emergency Phone: ${emergencyPhone.value}
+Signed on: ${new Date().toLocaleString()}`;
+            infoSection.appendChild(infoDetails);
+            
+            // Append all elements to container
+            pdfContainer.appendChild(docClone);
+            pdfContainer.appendChild(signatureTitle);
+            pdfContainer.appendChild(signatureImage);
+            pdfContainer.appendChild(infoSection);
+            
+            // Generate PDF
+            const opt = {
+                margin: 0.5,
+                filename: 'signed_bike_rental_agreement.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(pdfContainer).save();
+        }
+
         // Save signature
         saveBtn.addEventListener('click', () => {
             if (!validatePersonalInfo()) {
@@ -1117,17 +1184,8 @@
             //     return;
             // }
             
-            // Generate PDF of the entire document
-            const element = document.querySelector('.document');
-            const opt = {
-                margin: 1,
-                filename: 'signed_bike_rental_agreement.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            
-            html2pdf().set(opt).from(element).save();
+            // Generate complete PDF with document, signature, and info
+            generateCompletePDF();
             
             // Show success modal
             document.getElementById('savedName').textContent = fullName.value;
