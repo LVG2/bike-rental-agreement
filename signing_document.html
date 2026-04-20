@@ -1110,67 +1110,92 @@
         function generateCompletePDF() {
             // Create a container for the PDF content
             const pdfContainer = document.createElement('div');
+            pdfContainer.id = 'pdf-content-container';
+            pdfContainer.style.width = '8.5in';
             pdfContainer.style.backgroundColor = 'white';
-            pdfContainer.style.padding = '40px';
+            pdfContainer.style.color = '#000';
+            pdfContainer.style.padding = '0.5in';
             pdfContainer.style.fontFamily = 'Arial, sans-serif';
+            pdfContainer.style.fontSize = '12px';
+            pdfContainer.style.lineHeight = '1.5';
+            pdfContainer.style.position = 'fixed';
+            pdfContainer.style.top = '-9999px';
+            pdfContainer.style.left = '-9999px';
             
-            // Clone the document content
-            const docClone = document.querySelector('.document').cloneNode(true);
+            // Get the document content as HTML
+            const docContent = document.querySelector('.document').innerHTML;
+            pdfContainer.innerHTML = docContent;
             
-            // Get the signature canvas and convert to image
+            // Add spacing and signature section
+            const signatureDiv = document.createElement('div');
+            signatureDiv.style.marginTop = '30px';
+            signatureDiv.style.borderTop = '2px solid #000';
+            signatureDiv.style.paddingTop = '20px';
+            
+            const signatureTitle = document.createElement('h3');
+            signatureTitle.textContent = 'Digital Signature:';
+            signatureTitle.style.fontSize = '14px';
+            signatureTitle.style.marginBottom = '10px';
+            signatureDiv.appendChild(signatureTitle);
+            
+            // Add signature image
             const signatureImage = document.createElement('img');
             signatureImage.src = canvas.toDataURL('image/png');
             signatureImage.style.width = '100%';
             signatureImage.style.maxWidth = '400px';
             signatureImage.style.border = '1px solid #ccc';
-            signatureImage.style.marginTop = '20px';
+            signatureImage.style.marginBottom = '20px';
+            signatureDiv.appendChild(signatureImage);
             
-            // Add title for signature
-            const signatureTitle = document.createElement('h3');
-            signatureTitle.textContent = 'Digital Signature:';
-            signatureTitle.style.marginTop = '30px';
-            signatureTitle.style.marginBottom = '10px';
-            
-            // Add personal info section
-            const infoSection = document.createElement('div');
-            infoSection.style.marginTop = '30px';
-            infoSection.style.borderTop = '2px solid #ccc';
-            infoSection.style.paddingTop = '20px';
-            infoSection.style.backgroundColor = '#f9f9f9';
-            infoSection.style.padding = '20px';
+            // Add renter information
+            const infoDiv = document.createElement('div');
+            infoDiv.style.marginTop = '20px';
+            infoDiv.style.borderTop = '2px solid #000';
+            infoDiv.style.paddingTop = '20px';
+            infoDiv.style.backgroundColor = '#f5f5f5';
+            infoDiv.style.padding = '15px';
             
             const infoTitle = document.createElement('h3');
             infoTitle.textContent = 'Renter Information:';
-            infoSection.appendChild(infoTitle);
+            infoTitle.style.fontSize = '14px';
+            infoTitle.style.marginBottom = '10px';
+            infoDiv.appendChild(infoTitle);
             
-            const infoDetails = document.createElement('p');
-            infoDetails.style.whiteSpace = 'pre-line';
-            infoDetails.textContent = `Name: ${fullName.value}
-Date of Birth: ${dateOfBirth.value}
-Phone: ${phone.value}
-Address: ${address.value}
-Email: ${emailInput.value}
-Emergency Contact: ${emergencyContact.value}
-Emergency Phone: ${emergencyPhone.value}
-Signed on: ${new Date().toLocaleString()}`;
-            infoSection.appendChild(infoDetails);
+            const infoContent = document.createElement('div');
+            infoContent.style.fontSize = '11px';
+            infoContent.innerHTML = `
+                <p><strong>Name:</strong> ${fullName.value}</p>
+                <p><strong>Date of Birth:</strong> ${dateOfBirth.value}</p>
+                <p><strong>Phone:</strong> ${phone.value}</p>
+                <p><strong>Address:</strong> ${address.value}</p>
+                <p><strong>Email:</strong> ${emailInput.value}</p>
+                <p><strong>Emergency Contact:</strong> ${emergencyContact.value}</p>
+                <p><strong>Emergency Phone:</strong> ${emergencyPhone.value}</p>
+                <p><strong>Signed on:</strong> ${new Date().toLocaleString()}</p>
+            `;
+            infoDiv.appendChild(infoContent);
             
-            // Append all elements to container
-            pdfContainer.appendChild(docClone);
-            pdfContainer.appendChild(signatureTitle);
-            pdfContainer.appendChild(signatureImage);
-            pdfContainer.appendChild(infoSection);
+            pdfContainer.appendChild(signatureDiv);
+            pdfContainer.appendChild(infoDiv);
             
-            // Generate PDF
-            const opt = {
-                margin: 0.5,
-                filename: 'signed_bike_rental_agreement.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, logging: false },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
+            // Temporarily add to body so html2canvas can render it
+            document.body.appendChild(pdfContainer);
             
-            html2pdf().set(opt).from(pdfContainer).save();
+            // Generate PDF after a small delay to ensure rendering
+            setTimeout(() => {
+                const opt = {
+                    margin: [0.3, 0.3, 0.3, 0.3],
+                    filename: 'signed_bike_rental_agreement.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#fff' },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+                
+                html2pdf().set(opt).from(pdfContainer).save().then(() => {
+                    // Remove the container after PDF is generated
+                    document.body.removeChild(pdfContainer);
+                });
+            }, 100);
         }
 
         // Save signature
