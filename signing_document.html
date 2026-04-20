@@ -6,6 +6,7 @@
     <title>Document Signing</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AaAJv2C4Kofz0YqJdI9-rD6ERTtMpZYSStJEeqHCzC8TPbLVu3335Pzzeu4Bskrboct75EknAs_OidyV&components=buttons&currency=USD&intent=authorize"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,7 +69,7 @@
     </div>
     
     <div class="document">
-        <h2 data-translate="agreementTitle">BIKE RENTAL & LIABILITY RELEASE AGREEMENT</h2>
+        <h2 data-translate="agreementTitle">🚲BIKE RENTAL & LIABILITY RELEASE AGREEMENT🚲</h2>
         <p data-translate="agreementIntro">This Bike Rental and Liability Release Agreement ("Agreement") is entered into between the Company and the undersigned renter ("Renter").</p>
         
         <h3 data-translate="rentalTermsTitle">RENTAL TERMS:</h3>
@@ -1112,32 +1113,60 @@
             const pdfContainer = document.createElement('div');
             pdfContainer.id = 'pdf-content-container';
             pdfContainer.style.width = '8.5in';
+            pdfContainer.style.minHeight = '11in';
             pdfContainer.style.backgroundColor = 'white';
             pdfContainer.style.color = '#000';
             pdfContainer.style.padding = '0.5in';
             pdfContainer.style.fontFamily = 'Arial, sans-serif';
             pdfContainer.style.fontSize = '12px';
             pdfContainer.style.lineHeight = '1.5';
-            pdfContainer.style.position = 'fixed';
-            pdfContainer.style.top = '-9999px';
-            pdfContainer.style.left = '-9999px';
-            
-            // Get the document content as HTML
-            const docContent = document.querySelector('.document').innerHTML;
-            pdfContainer.innerHTML = docContent;
-            
+            pdfContainer.style.position = 'absolute';
+            pdfContainer.style.top = '0';
+            pdfContainer.style.left = '0';
+            pdfContainer.style.zIndex = '9999';
+            pdfContainer.style.boxSizing = 'border-box';
+
+            // Clone the document and preserve checkbox states
+            const docClone = document.querySelector('.document').cloneNode(true);
+
+            // Update checkboxes to show checked state visually
+            const checkboxes = docClone.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const originalCheckbox = document.getElementById(checkbox.id);
+                if (originalCheckbox && originalCheckbox.checked) {
+                    // Replace checkbox with checked symbol
+                    const checkedSymbol = document.createElement('span');
+                    checkedSymbol.textContent = '☑';
+                    checkedSymbol.style.color = '#28a745';
+                    checkedSymbol.style.fontSize = '16px';
+                    checkedSymbol.style.marginRight = '5px';
+                    checkbox.parentNode.replaceChild(checkedSymbol, checkbox);
+                } else {
+                    // Replace checkbox with unchecked symbol
+                    const uncheckedSymbol = document.createElement('span');
+                    uncheckedSymbol.textContent = '☐';
+                    uncheckedSymbol.style.color = '#666';
+                    uncheckedSymbol.style.fontSize = '16px';
+                    uncheckedSymbol.style.marginRight = '5px';
+                    checkbox.parentNode.replaceChild(uncheckedSymbol, checkbox);
+                }
+            });
+
+            pdfContainer.appendChild(docClone);
+
             // Add spacing and signature section
             const signatureDiv = document.createElement('div');
             signatureDiv.style.marginTop = '30px';
             signatureDiv.style.borderTop = '2px solid #000';
             signatureDiv.style.paddingTop = '20px';
-            
+            signatureDiv.style.pageBreakBefore = 'always';
+
             const signatureTitle = document.createElement('h3');
             signatureTitle.textContent = 'Digital Signature:';
             signatureTitle.style.fontSize = '14px';
             signatureTitle.style.marginBottom = '10px';
             signatureDiv.appendChild(signatureTitle);
-            
+
             // Add signature image
             const signatureImage = document.createElement('img');
             signatureImage.src = canvas.toDataURL('image/png');
@@ -1146,7 +1175,7 @@
             signatureImage.style.border = '1px solid #ccc';
             signatureImage.style.marginBottom = '20px';
             signatureDiv.appendChild(signatureImage);
-            
+
             // Add renter information
             const infoDiv = document.createElement('div');
             infoDiv.style.marginTop = '20px';
@@ -1154,13 +1183,13 @@
             infoDiv.style.paddingTop = '20px';
             infoDiv.style.backgroundColor = '#f5f5f5';
             infoDiv.style.padding = '15px';
-            
+
             const infoTitle = document.createElement('h3');
             infoTitle.textContent = 'Renter Information:';
             infoTitle.style.fontSize = '14px';
             infoTitle.style.marginBottom = '10px';
             infoDiv.appendChild(infoTitle);
-            
+
             const infoContent = document.createElement('div');
             infoContent.style.fontSize = '11px';
             infoContent.innerHTML = `
@@ -1174,28 +1203,35 @@
                 <p><strong>Signed on:</strong> ${new Date().toLocaleString()}</p>
             `;
             infoDiv.appendChild(infoContent);
-            
+
             pdfContainer.appendChild(signatureDiv);
             pdfContainer.appendChild(infoDiv);
-            
+
             // Temporarily add to body so html2canvas can render it
             document.body.appendChild(pdfContainer);
-            
+
             // Generate PDF after a small delay to ensure rendering
             setTimeout(() => {
                 const opt = {
                     margin: [0.3, 0.3, 0.3, 0.3],
                     filename: 'signed_bike_rental_agreement.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#fff' },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        logging: true, // Enable logging to debug
+                        backgroundColor: '#fff',
+                        allowTaint: true,
+                        foreignObjectRendering: true
+                    },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
                 };
-                
+
                 html2pdf().set(opt).from(pdfContainer).save().then(() => {
                     // Remove the container after PDF is generated
                     document.body.removeChild(pdfContainer);
                 });
-            }, 100);
+            }, 500); // Increased delay for better rendering
         }
 
         // Save signature
